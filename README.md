@@ -134,4 +134,4 @@ Each task can accept several config objects, to output several result files. You
 [gulp-size]: https://www.npmjs.com/package/gulp-size
 [node-notifier]: https://www.npmjs.com/package/node-notifier
 [SVG_SPRITES]: http://fvsch.com/code/svg-icons/how-to/
-[ZIP]: releases/latest
+[ZIP]: https://github.com/Gradientz/assets-builder/releases/latest
