@@ -1,0 +1,9 @@
+// Test Sass stylesheet
+
+$color-test: #0ff;
+
+.test {
+    display: flex;
+    color: $color-test + red;
+    background-color: $color-test - #0cc;
+}
