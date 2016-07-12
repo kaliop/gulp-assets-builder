@@ -23,6 +23,10 @@ var showSize   = require('../helpers/size.js')
  * @returns {*}
  */
 module.exports = function buildSass(config) {
+  var sassOpts = {
+    outputStyle: config.outputStyle || 'compressed',
+    includePaths: config.includePaths || []
+  }
   var prefixOpts = {}
   if (config.browsers) {
     prefixOpts.browsers = config.browsers
@@ -30,7 +34,7 @@ module.exports = function buildSass(config) {
   return gulp.src( config.src )
     .pipe( plumber(notify) )
     .pipe( sourcemaps.init() )
-    .pipe( sass({outputStyle: 'compressed'}) )
+    .pipe( sass(sassOpts) )
     .pipe( autoprefix(prefixOpts) )
     .pipe( showSize(config.dest) )
     .pipe( sourcemaps.write('.') )
