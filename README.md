@@ -69,7 +69,12 @@ Task script: `gulp/builders/sass.js`
   // (Optional) File patterns to watch for changes
   watch: 'assets/styles/**/*.scss',
   // (Optional) Autoprefixer: target browsers
-  browsers: ['last 3 versions']
+  browsers: ['last 3 versions'],
+  // (Optional) Sass output style
+  // Defaults to 'compressed', can also be: 'nested', 'expanded', 'compact'
+  outputStyle: 'compressed',
+  // (Optional) Sass include paths (for @import)
+  includePaths: []
 }
 ```
 
@@ -106,25 +111,51 @@ Task script: `gulp/builders/svgsprite.js`
   // (Optional) File patterns to watch for changes, or `true`
   // to use the same value as the src property
   watch: true,
+  // (Optional) Output a SVG file fit for inlining in a HTML page; defaults to false
+  inline: true,
+  // (Optional) Prefix symbol id attributes; no prefix by default
+  prefix: 'shape-'
 }
 ```
 
-### More than one build per task?
+### Several builds per task
 
-Each task can accept several config objects, to output several result files. You need to provide a full config object for each `dest` file.
+Each task can accept several config objects, using the `builds` property. You can provide an array of complete config objects in the `builds` property, or let it inherit from the task’s config:
 
 ```js
 {
   …,
-  jsconcat: [
-    { src:  'assets/scripts/topic1/*.js',
-      dest: 'public/svg/main.svg',
-      watch: true
-    },
-    { src:  'assets/scripts/topic2/*.js',
-      dest: 'public/svg/main.svg'
-    }
-  ],
+  sass: {
+    dest: 'public/css',
+    browsers: ['last 3 versions', 'ie >= 11'],
+    builds: [
+      { src: 'assets/styles/main.scss', watch: 'assets/styles/**/*.scss' },
+      { src: 'assets/styles/other.scss', outputStyle: 'compact' }
+    ]
+  },
+  …
+}
+```
+
+is equivalent to:
+
+```js
+{
+  …,
+  sass: {
+    builds: [
+      { src: 'assets/styles/main.scss',
+        watch: 'assets/styles/**/*.scss',
+        dest: 'public/css',
+        browsers: ['last 3 versions', 'ie >= 11']
+      },
+      { src: 'assets/styles/other.scss',
+        dest: 'public/css',
+        browsers: ['last 3 versions', 'ie >= 11'],
+        outputStyle: 'compact',
+      }
+    ]
+  },
   …
 }
 ```
