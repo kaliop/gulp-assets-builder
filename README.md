@@ -92,7 +92,9 @@ Task script: `gulp/builders/jsconcat.js`
   dest:  'public/js/main.js',
   // (Optional) File patterns to watch for changes, or `true`
   // to use the same value as the src property
-  watch: true
+  watch: true,
+  // (Optional) Should we minify the result? Default is true.
+  minify: true
 }
 ```
 

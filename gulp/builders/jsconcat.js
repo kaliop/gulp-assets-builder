@@ -6,6 +6,7 @@
 // Core tools
 var concat     = require('gulp-concat')
 var gulp       = require('gulp')
+var gulpif     = require('gulp-if')
 var path       = require('path')
 var plumber    = require('gulp-plumber')
 var sourcemaps = require('gulp-sourcemaps')
@@ -23,13 +24,15 @@ var showSize   = require('../helpers/size.js')
  * @returns {*}
  */
 module.exports = function buildJsConcat(config) {
+  // Opt-out of minification with any falsy value
+  var shouldMinify = 'minify' in config ? Boolean(config.minify) : true
   var destInfo = path.parse(config.dest)
 
   return gulp.src(config.src)
     .pipe( plumber(notify) )
     .pipe( sourcemaps.init() )
     .pipe( concat(destInfo.base) )
-    .pipe( uglify() )
+    .pipe( gulpif(shouldMinify, uglify()) )
     .pipe( showSize(destInfo.dir) )
     .pipe( sourcemaps.write('.') )
     .pipe( gulp.dest(destInfo.dir) )
