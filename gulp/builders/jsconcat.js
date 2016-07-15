@@ -22,14 +22,15 @@ var showSize   = require('../helpers/size.js')
  * @property {string} config.dest - output file name
  * @returns {*}
  */
-module.exports = function concatJS(config) {
-  var dest = path.parse(config.dest)
+module.exports = function buildJsConcat(config) {
+  var destInfo = path.parse(config.dest)
+
   return gulp.src(config.src)
     .pipe( plumber(notify) )
     .pipe( sourcemaps.init() )
-    .pipe( concat(dest.base) )
+    .pipe( concat(destInfo.base) )
     .pipe( uglify() )
-    .pipe( showSize(dest.dir) )
+    .pipe( showSize(destInfo.dir) )
     .pipe( sourcemaps.write('.') )
-    .pipe( gulp.dest(dest.dir) )
+    .pipe( gulp.dest(destInfo.dir) )
 }

@@ -39,7 +39,6 @@ Changing the location of the gulp scripts
 -----------------------------------------
 
 -   If you rename the `assets/config.js` file or move it somewhere else, update the `assets` property in the `"config"` section of `package.json`.
-
 -   If you rename the `gulp` directory or move it somewhere else, update the `--gulpfile` parameters in the `"scripts"` section of `package.json`.
 
 
@@ -74,7 +73,7 @@ Task script: `gulp/builders/sass.js`
   // Defaults to 'compressed', can also be: 'nested', 'expanded', 'compact'
   outputStyle: 'compressed',
   // (Optional) Sass include paths (for @import)
-  includePaths: []
+  includePaths: ['node_modules']
 }
 ```
 

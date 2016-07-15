@@ -22,11 +22,11 @@ var showSize   = require('../helpers/size.js')
  * @property {boolean} config.inline - for inlining in HTML documents
  * @returns {*}
  */
-module.exports = function makeSvgSprite(config) {
+module.exports = function buildSvgSprite(config) {
   // Prepare options
-  var dest = path.parse(config.dest)
+  var destInfo = path.parse(config.dest)
   var opts = {
-    mode: { symbol: { dest: '.', sprite: dest.base } },
+    mode: { symbol: { dest: '.', sprite: destInfo.base } },
     shape: { id: {separator: '-'}, transform: ['svgo'] }
   }
   if (config.inline) {
@@ -39,6 +39,6 @@ module.exports = function makeSvgSprite(config) {
   return gulp.src( config.src )
     .pipe( plumber(notify) )
     .pipe( svgSprite(opts) )
-    .pipe( showSize(dest.dir) )
-    .pipe( gulp.dest(dest.dir) )
+    .pipe( showSize(destInfo.dir) )
+    .pipe( gulp.dest(destInfo.dir) )
 }
