@@ -8,7 +8,7 @@
   "scripts": {
     "build": "gulp --gulpfile=gulp build",
     "watch": "gulp --gulpfile=gulp watch",
-    "list": "gulp --gulpfile=gulp --tasks"
+    "show": "gulp --gulpfile=gulp --tasks"
   },
   "devDependencies": {
     "glob": "^7.0",

@@ -31,7 +31,7 @@ npm run build
 npm run watch
 
 # (Optional) check that tasks are correctly configured
-npm run list
+npm run show
 ```
 
 
