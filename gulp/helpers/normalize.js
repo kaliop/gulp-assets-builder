@@ -9,24 +9,35 @@ var notify = require('./notify.js')
  * @returns {Array}
  */
 module.exports = function(baseConfig) {
+  var base = {}
   var list = []
-  // Make full config objects if we have several build entries
-  if (typeof baseConfig === 'object' && Array.isArray(baseConfig.builds)) {
-    var common = Object.keys(baseConfig).filter(function(x){return x!=='builds'})
-    baseConfig.builds.forEach(function(build) {
-      var config = {}
-      common.concat(Object.keys(build)).forEach(function(key) {
-        config[key] = key in build ? build[key] : baseConfig[key]
+  // Number or number-like keys are separate builds, other keys are shared config
+  Object.keys(baseConfig).forEach(function(key) {
+    var value = baseConfig[key]
+    if (isNaN(Number(key))) {
+      base[key] = value
+    }
+    else if (typeof value === 'object') {
+      list.push(value)
+    }
+  })
+  // Only one build config
+  if (list.length === 0) {
+    list.push(base)
+  }
+  // Or add base values to individual configs
+  else {
+    list = list.map(function(config) {
+      Object.keys(base).forEach(function(key) {
+        if (!(key in config)) config[key] = base[key]
       })
-      list.push(config)
+      return config
     })
   }
-  else {
-    list.push(baseConfig)
-  }
   // Normalize the src and watch properties
-  var normalized = list.map(function(config) {
-    if (typeof config !== 'object') return config
+  var normalized = list.filter(function(config) {
+    return typeof config === 'object'
+  }).map(function(config) {
     config.src = [].concat(config.src).filter(function(x) {
       return typeof x === 'string' && x.trim() !== ''
     })
@@ -35,10 +46,9 @@ module.exports = function(baseConfig) {
     }
     return config
   })
-  // And filter final configs objects
+  // Finally, only keep valid configs objects
   return normalized.filter(function(config) {
-    var ok = typeof config === 'object' &&
-      typeof config.dest === 'string' &&
+    var ok = typeof config.dest === 'string' &&
       Array.isArray(config.src) &&
       config.src.length > 0
     if (!ok) notify({

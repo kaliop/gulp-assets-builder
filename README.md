@@ -121,7 +121,27 @@ Task script: `gulp/builders/svgsprite.js`
 
 ### Several builds per task
 
-Each task can accept several config objects, using the `builds` property. You can provide an array of complete config objects in the `builds` property, or let it inherit from the task’s config:
+Each task can accept an array of config objects, instead of a single config object:
+
+```js
+{
+  …,
+  sass: [
+    { src: 'assets/styles/main.scss', watch: 'assets/styles/**/*.scss',
+      dest: 'public/css', browsers: ['last 3 versions', 'ie >= 11'] },
+    { src: 'assets/styles/other.scss', outputStyle: 'compact',
+      dest: 'public/css', browsers: ['last 3 versions', 'ie >= 11'] }
+  ]
+  …
+}
+```
+
+You can also share settings between objects, using an array-like syntax where:
+
+- text keys are shared between configs
+- number keys represent individual build configs
+
+The following example is equivalent to the previous example:
 
 ```js
 {
@@ -129,34 +149,9 @@ Each task can accept several config objects, using the `builds` property. You ca
   sass: {
     dest: 'public/css',
     browsers: ['last 3 versions', 'ie >= 11'],
-    builds: [
-      { src: 'assets/styles/main.scss', watch: 'assets/styles/**/*.scss' },
-      { src: 'assets/styles/other.scss', outputStyle: 'compact' }
-    ]
-  },
-  …
-}
-```
-
-is equivalent to:
-
-```js
-{
-  …,
-  sass: {
-    builds: [
-      { src: 'assets/styles/main.scss',
-        watch: 'assets/styles/**/*.scss',
-        dest: 'public/css',
-        browsers: ['last 3 versions', 'ie >= 11']
-      },
-      { src: 'assets/styles/other.scss',
-        dest: 'public/css',
-        browsers: ['last 3 versions', 'ie >= 11'],
-        outputStyle: 'compact',
-      }
-    ]
-  },
+    0: { src: 'assets/styles/main.scss', watch: 'assets/styles/**/*.scss' },
+    1: { src: 'assets/styles/other.scss', outputStyle: 'compact' }
+  }
   …
 }
 ```
