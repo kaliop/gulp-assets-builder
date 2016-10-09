@@ -1,7 +1,7 @@
+/**
+ * @file SVG symbol sprites
+ */
 'use strict'
-// ---------------------------
-// Builder: SVG symbol sprites
-// ---------------------------
 
 // Core tools
 var gulp       = require('gulp')

@@ -1,7 +1,7 @@
+/**
+ * @file Sass + Autoprefixer
+ */
 'use strict'
-// ----------------------------
-// Builder: Sass + Autoprefixer
-// ----------------------------
 
 // Core tools
 var autoprefix = require('gulp-autoprefixer')

@@ -1,21 +1,17 @@
 {
   "name": "assets-builder",
   "private": true,
-  "version": "1.1.0",
-  "config": {
-    "assets": "assets/config.js"
-  },
+  "version": "2.0.0-beta1",
   "scripts": {
-    "build": "gulp --gulpfile=gulp build",
-    "watch": "gulp --gulpfile=gulp watch",
-    "show": "gulp --gulpfile=gulp --tasks"
+    "build": "gulp build",
+    "watch": "gulp watch"
   },
   "devDependencies": {
     "glob": "^7.0",
     "gulp": "^3.9",
     "gulp-autoprefixer": "^3.1",
     "gulp-concat": "^2.6",
-    "gulp-if": "^2.0.1",
+    "gulp-if": "^2.0",
     "gulp-plumber": "^1.1",
     "gulp-sass": "^2.3",
     "gulp-size": "^2.1",

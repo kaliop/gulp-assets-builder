@@ -6,9 +6,10 @@ var notify = require('./notify.js')
  * Normalize a list of config objects with `src`, `dest`
  * and optional `watch` properties.
  * @param {Object} baseConfig
+ * @param {string} configName
  * @returns {Array}
  */
-module.exports = function(baseConfig) {
+module.exports = function(baseConfig, configName) {
   var base = {}
   var list = []
   // Number or number-like keys are separate builds, other keys are shared config
@@ -51,10 +52,15 @@ module.exports = function(baseConfig) {
     var ok = typeof config.dest === 'string' &&
       Array.isArray(config.src) &&
       config.src.length > 0
-    if (!ok) notify({
-      title: '[assets-builder] Invalid config object',
-      message: JSON.stringify(config)
-    })
+    if (!ok) {
+      var configText = JSON.stringify(config, null, 2)
+        .replace(/^{\n  /, '{ ')
+        .replace(/\n}$/, ' }')
+      notify({
+        title: 'Invalid \'' + configName + '\' config object',
+        message: configText
+      })
+    }
     return ok
   })
 }

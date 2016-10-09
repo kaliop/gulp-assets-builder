@@ -12,7 +12,7 @@ var missing = require('./missing.js')
  * @returns {Array} - names of registered tasks
  */
 module.exports = function(configs, key, builder) {
-  configs = normalize(configs)
+  configs = normalize(configs, key)
   var taskNames = []
 
   configs.forEach(function(config, index) {

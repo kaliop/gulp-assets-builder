@@ -15,8 +15,8 @@ module.exports = function(pattern, taskId) {
     if (err) notify(err)
     if (found.length === 0) {
       notify({
-        title: '[' + taskId + '] Warning: file(s) not found',
-        message: 'For path: ' + pattern
+        title: 'Missing \'' + taskId + '\' sources',
+        message: 'Nothing at \'' + pattern + '\''
       })
     }
   })

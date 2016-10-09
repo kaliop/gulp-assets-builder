@@ -28,15 +28,20 @@ module.exports = function(err) {
     }
     // Some gulp plugins use the 'formatted' key with a message format
     // that suits our needs better, but 'message' is more common.
-    message = err.formatted || err.message
+    message = err.formatted || err.message || ''
   }
 
   // Show error in console
+  var titleColor = gutil.colors.red
+  if (typeof err.colors === 'string') {
+    err.colors.split('.').forEach(function(name){
+      if (name in titleColor) titleColor = titleColor[name]
+    })
+  }
   gutil.log(
-    gutil.colors.magenta(title),
-    message ? ('\n' + message).replace(/\n/g, '\n           ') : ''
+    titleColor(title),
+    message ? ('\n' + message).replace(/\n/g, '\n  ') : ''
   )
-  gutil.beep()
 
   // And in system notifications if we can
   notifier.notify({

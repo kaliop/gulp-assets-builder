@@ -1,7 +1,7 @@
+/**
+ * @file Concat and minify JS code
+ */
 'use strict'
-// ----------------------------------
-// Builder: concat and minify JS code
-// ----------------------------------
 
 // Core tools
 var concat     = require('gulp-concat')

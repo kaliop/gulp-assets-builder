@@ -1,51 +1,47 @@
-Configurable gulp-based assets builder
-======================================
+Configurable assets builder
+===========================
 
-A small collection of gulp tasks we use to build front-end code, for fully static or CMS-based website projects. Includes Sass, Autoprefixer, SVG sprites and JS minification.
+A collection of configurable [gulp][] tasks we use to build front-end code, mostly for fully static or CMS-based website projects. Includes Sass with Autoprefixer, SVG sprites and JS minification.
 
+*Some highlights:*
 
-Highlights
-----------
-
--   Flexible configuration, in a separate file
--   Each build task is only active if the corresponding config is set
--   System notifications for errors (using [node-notifier][])
--   Logs information on output files (using [gulp-size][])
+-   Flexible configuration
+-   Adds useful logs (written files, errors, warnings)
+-   Plus system notifications for errors
+-   Easy to remove or edit built-in tasks, or write your own
 
 
-How to use this repo
---------------------
+Installation and usage
+----------------------
 
-This is an example for using [gulp][], not a library. We recommend [downloading a zip of this repo][ZIP] and using it as a starting point for a project, changing the directory structure or the JS code as you see fit.
+Requirements: you don’t have to know gulp to use this tool, but you should have [Node.js][] installed, and access to a command prompt (Terminal on macOS, cmd.exe on Windows, etc.).
 
-Console usage uses npm scripts:
+Install: [Download a ZIP with the assets-builder scripts and config][ZIP], and move its contents to your project dir. You will need to add these files to your project:
 
-```
-# Install dependencies (requires Node.js)
-npm install
+1.  `assets-builder` (the whole directory)
+2.  `gulpfile.js` (this is where your config lives)
+3.  `package.json` (used to install the dependencies)
 
-# Build CSS/JS/SVG once
-npm run build
+You will need to change the config object in `gulpfile.js` to fit your project. Then you can open your project directory in a command prompt or terminal, and use those commands:
 
-# Build CSS/JS/SVG on changes
-npm run watch
-
-# (Optional) check that tasks are correctly configured
-npm run show
-```
+-   `npm install` (install dependencies)
+-   `npm run build` (build CSS/JS/SVG once)
+-   `npm run watch` (build CSS/JS/SVG when files are changed)
 
 
-Changing the location of the gulp scripts
------------------------------------------
+Writing a new task
+------------------
 
--   If you rename the `assets/config.js` file or move it somewhere else, update the `assets` property in the `"config"` section of `package.json`.
--   If you rename the `gulp` directory or move it somewhere else, update the `--gulpfile` parameters in the `"scripts"` section of `package.json`.
+If you want to write a new or different task (for example, one that transpiles ES6 code with Babel and makes a JS bundle), you should:
+
+1.  Add your dependencies to `package.json` (`npm install my-dependency --save-dev`).
+2.  Write a task script in `assets-builder/tasks`. It should export a function that takes a config object and does… what you want to do. See the existing tasks for examples.
 
 
 Configuring tasks
 -----------------
 
-Configuration is in `assets/config.js` (by default). Config objects have the following properties:
+Config objects have the following properties:
 
 -   Required `src`: paths or glob patterns (string or array of strings).
 -   Required `dest`: a single path (string).
@@ -56,7 +52,7 @@ Some tasks may offer additional options. See the next section for details.
 ### Sass → Autoprefixer → CSS
 
 Config key: `sass`<br>
-Task script: `gulp/builders/sass.js`
+Task script: `assets-builder/tasks/sass.js`
 
 ```js
 {
@@ -80,7 +76,7 @@ Task script: `gulp/builders/sass.js`
 ### JS scripts → Concatenated and minified JS
 
 Config key: `jsconcat`<br>
-Task script: `gulp/builders/jsconcat.js`
+Task script: `assets-builder/tasks/jsconcat.js`
 
 ```js
 {
@@ -98,10 +94,10 @@ Task script: `gulp/builders/jsconcat.js`
 }
 ```
 
-### SVG images → [SVG symbol sprites][SVG_SPRITES]
+### SVG images → [SVG symbol sprites][DOC_SVG_SPRITES]
 
 Config key: `svgsprite`<br>
-Task script: `gulp/builders/svgsprite.js`
+Task script: `assets-builder/tasks/svgsprite.js`
 
 ```js
 {
@@ -158,7 +154,6 @@ The following example is equivalent to the previous example:
 
 
 [gulp]: http://gulpjs.com/
-[gulp-size]: https://www.npmjs.com/package/gulp-size
-[node-notifier]: https://www.npmjs.com/package/node-notifier
-[SVG_SPRITES]: http://fvsch.com/code/svg-icons/how-to/
-[ZIP]: https://github.com/Gradientz/assets-builder/releases/latest
+[Node.js]: https://nodejs.org
+[ZIP]: https://github.com/gradientz/assets-builder/archive/config-in-gulpfile.zip
+[DOC_SVG_SPRITES]: http://fvsch.com/code/svg-icons/how-to/
