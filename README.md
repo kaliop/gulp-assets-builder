@@ -10,32 +10,32 @@ A collection of configurable [gulp][] tasks we use to build front-end code, most
 -   Plus system notifications for errors
 -   Easy to remove or edit built-in tasks, or write your own
 
+*Table of contents:*
+
+-   [Installation and usage](#installation-and-usage)
+-   [Configuring tasks](#configuring-tasks)
+-   [Built-in tasks](#built-in-tasks)
+-   [Writing a new task](#writing-a-new-task)
+
 
 Installation and usage
 ----------------------
 
 Requirements: you don’t have to know gulp to use this tool, but you should have [Node.js][] installed, and access to a command prompt (Terminal on macOS, cmd.exe on Windows, etc.).
 
-Install: [Download a ZIP with the assets-builder scripts and config][ZIP], and move its contents to your project dir. You will need to add these files to your project:
+Install:
 
-1.  `assets-builder` (the whole directory)
-2.  `gulpfile.js` (this is where your config lives)
-3.  `package.json` (used to install the dependencies)
+1.  [Download a ZIP with the assets-builder scripts and config][ZIP],
+2.  move its contents to your project dir,
+3.  and modify the config object in `gulpfile.js` to suit your needs.
+4.  Finally, in a command prompt, `cd` to your project dir and run `npm install`.
 
-You will need to change the config object in `gulpfile.js` to fit your project. Then you can open your project directory in a command prompt or terminal, and use those commands:
+There are two commands than you can use:
 
--   `npm install` (install dependencies)
 -   `npm run build` (build CSS/JS/SVG once)
 -   `npm run watch` (build CSS/JS/SVG when files are changed)
 
-
-Writing a new task
-------------------
-
-If you want to write a new or different task (for example, one that transpiles ES6 code with Babel and makes a JS bundle), you should:
-
-1.  Add your dependencies to `package.json` (`npm install my-dependency --save-dev`).
-2.  Write a task script in `assets-builder/tasks`. It should export a function that takes a config object and does… what you want to do. See the existing tasks for examples.
+(Advanced use: if you want access to more gulp commands, you can install gulp globally with `npm install -g gulp`, and run commands such as `gulp --tasks` to list all individual tasks.)
 
 
 Configuring tasks
@@ -46,10 +46,45 @@ Config objects have the following properties:
 -   Required `src`: paths or glob patterns (string or array of strings).
 -   Required `dest`: a single path (string).
 -   Optional `watch`: either the value `true` to reuse the `src` config, or a different set of paths or glob patterns (string or array of strings).
+-   Some tasks may offer additional options (see the next section for details).
 
-Some tasks may offer additional options. See the next section for details.
+You can make multiple builds by providing an array of config objects, instead of a single config object:
+
+```js
+{
+  …,
+  sass: [
+    { src: 'assets/styles/main.scss', watch: 'assets/styles/**/*.scss',
+      dest: 'public/css', browsers: ['last 3 versions', 'ie >= 11'] },
+    { src: 'assets/styles/other.scss', watch: false, outputStyle: 'compact',
+      dest: 'public/css', browsers: ['last 3 versions', 'ie >= 11'] }
+  ]
+  …
+}
+```
+
+You can also share settings between objects, using an array-like syntax where string keys are shared between configs, and number keys represent individual build configs. This is equivalent to the previous example:
+
+```js
+{
+  …,
+  sass: {
+    dest: 'public/css',
+    browsers: ['last 3 versions', 'ie >= 11'],
+    0: { src: 'assets/styles/main.scss', watch: 'assets/styles/**/*.scss' },
+    1: { src: 'assets/styles/other.scss', watch: false, outputStyle: 'compact' }
+  }
+  …
+}
+```
+
+
+Built-in tasks
+--------------
 
 ### Sass → Autoprefixer → CSS
+
+Runs node-sass and autoprefixer.
 
 Config key: `sass`<br>
 Task script: `assets-builder/tasks/sass.js`
@@ -75,6 +110,8 @@ Task script: `assets-builder/tasks/sass.js`
 
 ### JS scripts → Concatenated and minified JS
 
+Lets you concatenate and minify JS code. Note that there is no support for wrapping code in IIFEs, or working with modules (see e.g. Browserify or Rollup for that). 
+
 Config key: `jsconcat`<br>
 Task script: `assets-builder/tasks/jsconcat.js`
 
@@ -94,7 +131,9 @@ Task script: `assets-builder/tasks/jsconcat.js`
 }
 ```
 
-### SVG images → [SVG symbol sprites][DOC_SVG_SPRITES]
+### SVG images → SVG symbol sprites
+
+Takes a bunch of SVG files and make a [SVG symbol sprite][DOC_SVG_SPRITES], to be used inline in your HTML pages or as an external resource.
 
 Config key: `svgsprite`<br>
 Task script: `assets-builder/tasks/svgsprite.js`
@@ -115,42 +154,14 @@ Task script: `assets-builder/tasks/svgsprite.js`
 }
 ```
 
-### Several builds per task
 
-Each task can accept an array of config objects, instead of a single config object:
+Writing a new task
+------------------
 
-```js
-{
-  …,
-  sass: [
-    { src: 'assets/styles/main.scss', watch: 'assets/styles/**/*.scss',
-      dest: 'public/css', browsers: ['last 3 versions', 'ie >= 11'] },
-    { src: 'assets/styles/other.scss', outputStyle: 'compact',
-      dest: 'public/css', browsers: ['last 3 versions', 'ie >= 11'] }
-  ]
-  …
-}
-```
+If you want to write a new or different task (for example, one that transpiles ES6 code with Babel and makes a JS bundle), you should:
 
-You can also share settings between objects, using an array-like syntax where:
-
-- text keys are shared between configs
-- number keys represent individual build configs
-
-The following example is equivalent to the previous example:
-
-```js
-{
-  …,
-  sass: {
-    dest: 'public/css',
-    browsers: ['last 3 versions', 'ie >= 11'],
-    0: { src: 'assets/styles/main.scss', watch: 'assets/styles/**/*.scss' },
-    1: { src: 'assets/styles/other.scss', outputStyle: 'compact' }
-  }
-  …
-}
-```
+1.  Add your dependencies to `package.json` (`npm install my-dependency --save-dev`).
+2.  Write a task script in `assets-builder/tasks`. It should export a function that takes a config object and does… what you want to do. See the existing tasks for examples.
 
 
 [gulp]: http://gulpjs.com/
