@@ -20,13 +20,13 @@ module.exports = function(configs, key, builder) {
     var buildId = 'build:' + id
     var watchId = 'watch:' + id
 
-    // Asynchronously notify about paths or patterns that match no files
-    config.src.forEach(function(pattern) {
-      missing(pattern, id)
-    })
-
     // Register build task
     gulp.task(buildId, function() {
+      // notify about paths or patterns that match no files
+      config.src.forEach(function(pattern) {
+        missing(pattern, id)
+      })
+      // do the actual building
       builder(config)
     })
     taskNames.push(buildId)
