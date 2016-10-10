@@ -16,9 +16,9 @@ module.exports = function(configs, key, builder) {
   var taskNames = []
 
   configs.forEach(function(config, index) {
-    var id = key + (configs.length > 1 ? ':' + index : '')
-    var buildId = 'build:' + id
-    var watchId = 'watch:' + id
+    var id = key + (configs.length > 1 ? '.' + index : '')
+    var buildId = 'build.' + id
+    var watchId = 'watch.' + id
 
     // Register build task
     gulp.task(buildId, function() {
