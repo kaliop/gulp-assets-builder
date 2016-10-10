@@ -1,13 +1,11 @@
 Configurable assets builder
 ===========================
 
-A collection of configurable [gulp][] tasks we use to build front-end code, mostly for fully static or CMS-based website projects. Includes Sass with Autoprefixer, SVG sprites and JS minification.
-
-*Some highlights:*
+A collection of configurable [gulp][] tasks we use to build front-end code, mostly for fully static or CMS-based website projects.
 
 -   Flexible configuration
--   Adds useful logs (written files, errors, warnings)
--   Plus system notifications for errors
+-   Useful logs and system alerts
+-   Built-in tasks: Sass with Autoprefixer, SVG sprites and JS minification
 -   Easy to remove or edit built-in tasks, or write your own
 
 *Table of contents:*
@@ -35,7 +33,7 @@ There are two commands than you can use:
 -   `npm run build` (build CSS/JS/SVG once)
 -   `npm run watch` (build CSS/JS/SVG when files are changed)
 
-(Advanced use: if you want access to more gulp commands, you can install gulp globally with `npm install -g gulp`, and run commands such as `gulp --tasks` to list all individual tasks.)
+Important: if you’re using Git, don’t forget to add `node_modules` to your `.gitignore`, to avoid versioning the many files installed by npm.
 
 
 Configuring tasks
@@ -166,5 +164,5 @@ If you want to write a new or different task (for example, one that transpiles E
 
 [gulp]: http://gulpjs.com/
 [Node.js]: https://nodejs.org
-[ZIP]: https://github.com/gradientz/assets-builder/archive/config-in-gulpfile.zip
+[ZIP]: https://github.com/gradientz/assets-builder/archive/master.zip
 [DOC_SVG_SPRITES]: http://fvsch.com/code/svg-icons/how-to/

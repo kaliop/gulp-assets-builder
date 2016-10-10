@@ -7,12 +7,13 @@
  * https://github.com/gradientz/assets-builder/blob/master/README.md
  *
  * You can write your own tasks by adding a script in:
- * 'assets-builder/builders'. If you’re using Node packages or gulp
- * plugins, don’t forget to add them to your package.json.
- *
+ * 'assets-builder/tasks'. If you’re using Node packages or gulp
+ * plugins, don’t forget to add them to your package.json with
+ * `npm install [package-name] --save-dev`
  */
-var config = {
-  // Sass+Autoprefixer config. We watch files in subfolders
+require('./assets-builder')({
+
+  // Sass + Autoprefixer config. We watch files in subfolders
   // but only build the SCSS files at the styles root.
   sass: {
     src:   'source/styles/*.scss',
@@ -20,6 +21,7 @@ var config = {
     dest:  'public/css',
     browsers: ['last 3 versions', 'ie >= 11', 'ios >= 9', 'android >= 5']
   },
+
   // JS concatenation + minification config. You can take JS files
   // from node_modules, just remember to install them like this:
   //     npm install jquery --save
@@ -32,6 +34,7 @@ var config = {
     dest:  'public/js/main.js',
     watch: true // watch the src files
   },
+
   // SVG symbol sprite config. Here we are making two sprites
   // from two folders, a small one with critical icons to be
   // inlined in HTML pages, and the main external sprite.
@@ -49,7 +52,5 @@ var config = {
       watch: true
     }
   ]
-}
 
-// Register Gulp tasks
-require('./assets-builder')(config)
+})
