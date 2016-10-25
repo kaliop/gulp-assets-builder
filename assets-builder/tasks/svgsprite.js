@@ -26,14 +26,21 @@ module.exports = function buildSvgSprite(config) {
   // Prepare options
   var destInfo = path.parse(config.dest)
   var opts = {
-    mode: { symbol: { dest: '.', sprite: destInfo.base } },
-    shape: { id: {separator: '-'}, transform: ['svgo'] }
+    mode: {
+      symbol: {
+        dest: '.', sprite: destInfo.base
+      }
+    },
+    shape: {
+      id: {
+        separator: '-',
+        generator: (config.prefix || '') + '%s'
+      },
+      transform: ['svgo']
+    }
   }
   if (config.inline) {
     opts.mode.symbol.inline = true
-  }
-  if (config.prefix) {
-    opts.shape.id.generator = config.prefix + '%s'
   }
   // Build sprite
   return gulp.src( config.src )
