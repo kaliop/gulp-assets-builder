@@ -8,6 +8,10 @@ A collection of configurable [gulp][] tasks we use to build front-end code, most
 -   Built-in tasks: Sass with Autoprefixer, SVG sprites and JS minification
 -   Easy to remove or edit built-in tasks, or write your own
 
+*Requirements:*
+
+-   [Node.js][] >= 4.0
+
 *Table of contents:*
 
 -   [Installation and usage](#installation-and-usage)
@@ -18,8 +22,6 @@ A collection of configurable [gulp][] tasks we use to build front-end code, most
 
 Installation and usage
 ----------------------
-
-Requirements: you don’t have to know gulp to use this tool, but you should have [Node.js][] installed, and access to a command prompt (Terminal on macOS, cmd.exe on Windows, etc.).
 
 Install:
 
