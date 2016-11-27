@@ -10,6 +10,7 @@ var size = require('gulp-size')
 module.exports = function(dest) {
   return size({
     showFiles: true,
+    showTotal: false,
     title: 'Writing → ' + dest + '/'
   })
 }
