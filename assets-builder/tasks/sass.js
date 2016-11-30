@@ -3,16 +3,15 @@
  */
 'use strict'
 
-// Core tools
-var autoprefix = require('gulp-autoprefixer')
+// Core
 var gulp       = require('gulp')
-var plumber    = require('gulp-plumber')
+var plumbing   = require('../helpers/plumbing.js')
+var size       = require('../helpers/size.js')
+
+// Specific
+var autoprefix = require('gulp-autoprefixer')
 var sass       = require('gulp-sass')
 var sourcemaps = require('gulp-sourcemaps')
-
-// Helpers
-var notify     = require('../helpers/notify.js')
-var showSize   = require('../helpers/size.js')
 
 /**
  * Build one or more Sass stylesheets
@@ -32,11 +31,11 @@ module.exports = function buildSass(config) {
     prefixOpts.browsers = config.browsers
   }
   return gulp.src( config.src )
-    .pipe( plumber(notify) )
+    .pipe( plumbing() )
     .pipe( sourcemaps.init() )
     .pipe( sass(sassOpts) )
     .pipe( autoprefix(prefixOpts) )
-    .pipe( showSize(config.dest) )
+    .pipe( size(config.dest) )
     .pipe( sourcemaps.write('.') )
     .pipe( gulp.dest(config.dest) )
 }
