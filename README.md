@@ -135,8 +135,8 @@ Task script: `assets-builder/tasks/jsconcat.js`
 
 Takes a bunch of SVG files and make a [SVG symbol sprite][DOC_SVG_SPRITES], to be used inline in your HTML pages or as an external resource.
 
-Config key: `svgsprite`<br>
-Task script: `assets-builder/tasks/svgsprite.js`
+Config key: `svgsymbols`<br>
+Task script: `assets-builder/tasks/svgsymbols.js`
 
 ```js
 {
@@ -147,10 +147,15 @@ Task script: `assets-builder/tasks/svgsprite.js`
   // (Optional) File patterns to watch for changes, or `true`
   // to use the same value as the src property
   watch: true,
-  // (Optional) Output a SVG file fit for inlining in a HTML page; defaults to false
-  inline: true,
-  // (Optional) Prefix symbol id attributes; no prefix by default
-  prefix: 'shape-'
+  // (Optional) Output a HTML demo page alongside the sprite
+  demo: false,
+  // (Optional) Add attributes for an inline <svg> sprite
+  inline: false,
+  // (Optional) Pattern to use for symbol id attributes. '%f' is the
+  // original filename with only lowercase letters and digits.
+  symbolId: 'icon-%f',
+  // (Optional) Class name(s) to use in HTML usage examples.
+  symbolClass: 'icon icon-%f'
 }
 ```
 

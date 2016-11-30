@@ -38,18 +38,16 @@ require('./assets-builder')({
   // SVG symbol sprite config. Here we are making two sprites
   // from two folders, a small one with critical icons to be
   // inlined in HTML pages, and the main external sprite.
-  svgsprite: [
+  svgsymbols: [
     {
       src: 'source/icons/critical/*.svg',
       dest: 'public/svg/critical.svg',
-      watch: true,
-      inline: true,
-      prefix: 'icon-'
+      watch: true, demo: true, inline: true
     },
     {
       src: 'source/icons/main/*.svg',
       dest: 'public/svg/main.svg',
-      watch: true
+      watch: true, demo: true
     }
   ]
 
