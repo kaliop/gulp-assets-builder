@@ -9,9 +9,16 @@ var notify = require('./notify.js')
  * @param {string} configName
  * @returns {Array}
  */
-module.exports = function(baseConfig, configName) {
+module.exports = function normalize(baseConfig, configName) {
   var base = {}
   var list = []
+  if (typeof baseConfig !== 'object') {
+    notify({
+      title: 'Invalid \'' + configName + '\' config object',
+      message: 'Config type: ' + typeof baseConfig
+    })
+    return []
+  }
   // Number or number-like keys are separate builds, other keys are shared config
   Object.keys(baseConfig).forEach(function(key) {
     var value = baseConfig[key]

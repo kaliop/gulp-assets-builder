@@ -15,7 +15,7 @@
       icon.svg.content + '</symbol>';
   });
 
-  var haystack = symbols.join() + (defs || '');
+  var haystack = symbols.join('') + (defs || '');
   var svgAttrs = {
     'xmlns': 'http://www.w3.org/2000/svg',
     'xmlns:xlink': haystack.indexOf('xlink:href') ? 'http://www.w3.org/1999/xlink' : null,

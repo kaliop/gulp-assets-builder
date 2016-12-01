@@ -9,7 +9,7 @@ var notify = require('./notify.js')
  * @param {string} pattern - glob pattern
  * @param {string} taskId
  */
-module.exports = function(pattern, taskId) {
+module.exports = function missing(pattern, taskId) {
   glob(pattern, function(err, found) {
     if (err) notify(err)
     if (found.length === 0) {

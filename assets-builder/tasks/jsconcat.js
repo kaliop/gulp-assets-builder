@@ -3,36 +3,33 @@
  */
 'use strict'
 
-// Core
-var concat     = require('gulp-concat')
-var gulp       = require('gulp')
-var gulpif     = require('gulp-if')
-var path       = require('path')
-var plumbing   = require('../helpers/plumbing.js')
-var size       = require('../helpers/size.js')
+// Core & utils
+var gulp = require('gulp')
+var path = require('path')
+var __ = require('../taskutils.js')
 
-// Specific
-var uglify     = require('gulp-uglify')
-var sourcemaps = require('gulp-sourcemaps')
+// Task-specific dependencies
+var deps = __.load('jsconcat', require('./jsconcat.json').dependencies)
+var uglify = deps['gulp-uglify']
 
 /**
  * Make a JS build, optionally minified
- * @param {object} config
- * @property {Array|string} config.src - glob patterns of files to concatenate
- * @property {string} config.dest - output file name
+ * @param {object} conf
+ * @property {Array|string} conf.src - glob patterns of files to concatenate
+ * @property {string} conf.dest - output file name
  * @returns {*}
  */
-module.exports = function buildJsConcat(config) {
+module.exports = function jsconcat(conf) {
   // Opt-out of minification with any falsy value
-  var minify = 'minify' in config ? Boolean(config.minify) : true
-  var dest = path.parse(config.dest)
+  var minify = 'minify' in conf ? Boolean(conf.minify) : true
+  var dest = path.parse(conf.dest)
 
-  return gulp.src(config.src)
-    .pipe( plumbing() )
-    .pipe( sourcemaps.init() )
-    .pipe( concat(dest.base) )
-    .pipe( gulpif(minify, uglify()) )
-    .pipe( size(dest.dir) )
-    .pipe( sourcemaps.write('.') )
+  return gulp.src(conf.src)
+    .pipe( __.logerrors() )
+    .pipe( __.sourcemaps.init() )
+    .pipe( __.concat(dest.base) )
+    .pipe( __.if(minify, uglify()) )
+    .pipe( __.size(dest.dir) )
+    .pipe( __.sourcemaps.write('.') )
     .pipe( gulp.dest(dest.dir) )
 }

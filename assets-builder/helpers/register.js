@@ -11,7 +11,7 @@ var missing = require('./missing.js')
  * @param {Function} builder - callback that takes a config object
  * @returns {Array} - names of registered tasks
  */
-module.exports = function(configs, key, builder) {
+module.exports = function register(configs, key, builder) {
   configs = normalize(configs, key)
   var taskNames = []
 

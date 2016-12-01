@@ -3,39 +3,38 @@
  */
 'use strict'
 
-// Core
-var gulp       = require('gulp')
-var plumbing   = require('../helpers/plumbing.js')
-var size       = require('../helpers/size.js')
+// Core & utils
+var gulp = require('gulp')
+var __ = require('./../taskutils.js')
 
-// Specific
-var autoprefix = require('gulp-autoprefixer')
-var sass       = require('gulp-sass')
-var sourcemaps = require('gulp-sourcemaps')
+// Task-specific dependencies
+var deps = __.load('sass', require('./sass.json').dependencies)
+var autoprefixer = deps['gulp-autoprefixer']
+var sass = deps['gulp-sass']
 
 /**
  * Build one or more Sass stylesheets
- * @param {Object} config
- * @property {Array|string} config.src - glob patterns of Sass files to build
- * @property {string} config.dest - output file name
- * @property {string} config.browsers - Autoprefixer browser compat
+ * @param {Object} conf
+ * @property {Array|string} conf.src - glob patterns of Sass files to build
+ * @property {string} conf.dest - output file name
+ * @property {string} conf.browsers - Autoprefixer browser compat
  * @returns {*}
  */
-module.exports = function buildSass(config) {
+module.exports = function sass(conf) {
   var sassOpts = {
-    outputStyle: config.outputStyle || 'compressed',
-    includePaths: config.includePaths || []
+    outputStyle: conf.outputStyle || 'compressed',
+    includePaths: conf.includePaths || []
   }
   var prefixOpts = {}
-  if (config.browsers) {
-    prefixOpts.browsers = config.browsers
+  if (conf.browsers) {
+    prefixOpts.browsers = conf.browsers
   }
-  return gulp.src( config.src )
-    .pipe( plumbing() )
-    .pipe( sourcemaps.init() )
+  return gulp.src( conf.src )
+    .pipe( __.logerrors() )
+    .pipe( __.sourcemaps.init() )
     .pipe( sass(sassOpts) )
-    .pipe( autoprefix(prefixOpts) )
-    .pipe( size(config.dest) )
-    .pipe( sourcemaps.write('.') )
-    .pipe( gulp.dest(config.dest) )
+    .pipe( autoprefixer(prefixOpts) )
+    .pipe( __.size(conf.dest) )
+    .pipe( __.sourcemaps.write('.') )
+    .pipe( gulp.dest(conf.dest) )
 }

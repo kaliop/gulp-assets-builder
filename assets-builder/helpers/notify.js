@@ -1,7 +1,12 @@
 'use strict'
 
 var gutil = require('gulp-util')
-var notifier = require('node-notifier')
+
+// Using node-notifier should be optional
+// e.g. Developer installs it locally or globally on their workstation,
+// but we don't use it on a server environment
+var notifier = null;
+try { notifier = require('node-notifier') } catch(err) {}
 
 /**
  * Log and notify errors
@@ -9,7 +14,7 @@ var notifier = require('node-notifier')
  * data, so sometimes it can be hard to display the right information.
  * @param {object} err
  */
-module.exports = function(err) {
+module.exports = function notify(err) {
   // Prepare error message
   var title = '[assets-builder] Error'
   var message = ''
@@ -44,15 +49,19 @@ module.exports = function(err) {
   )
 
   // And in system notifications if we can
-  notifier.notify({
-    title: title,
-    message: message.replace(/\s*\n\s*/g, ' '),
-    sound: true
-  })
+  if (notifier) {
+    notifier.notify({
+      title: title,
+      message: message.replace(/\s*\n\s*/g, ' '),
+      sound: true
+    })
+  }
 
   // Necessary so that errors from gulp plugins dont stop watch tasks
   if (typeof this === 'object' && this.emit) {
     this.emit('end')
   }
 
+  // Useful when throwing, as in throw notify({…})
+  return title + '\n' + message
 }

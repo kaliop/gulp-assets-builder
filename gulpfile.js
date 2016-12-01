@@ -2,7 +2,7 @@
  * Configuration for assets-builder
  * (https://github.com/gradientz/assets-builder)
  *
- * There are 3 built-in tasks: 'sass', 'jsconcat' and 'svgsprite'.
+ * There are 3 built-in tasks: 'sass', 'jsconcat' and 'svgsymbols'.
  * See the documentation for details about task options:
  * https://github.com/gradientz/assets-builder/blob/master/README.md
  *

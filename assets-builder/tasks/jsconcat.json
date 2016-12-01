@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "gulp-uglify": "^1.5"
+  }
+}
