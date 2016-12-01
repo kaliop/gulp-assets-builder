@@ -1,9 +1,11 @@
-### Task: compile Sass with Autoprefixer
+# Task: compile Sass with Autoprefixer
 
 - Config key: `sass`
 - Source: `assets-builder/tasks/sass.js`
 
 Runs node-sass and autoprefixer.
+
+## Options
 
 ```js
 {
