@@ -16,8 +16,11 @@ A collection of configurable [gulp](http://gulpjs.com/) tasks we use to build fr
 
 -   [Installation and usage](#installation-and-usage)
 -   [Configuring tasks](#configuring-tasks)
--   
 -   [How to write a new task](#how-to-write-a-new-task)
+-   Built-in tasks:
+    - [sass](doc/task-sass.md) (Sass and Autoprefixer)
+    - [svgsymbols](doc/task-svgsymbols.md) (SVG symbol sprites)
+    - [jsconcat](doc/task-jsconcat.md) (Concatenate and minify JS scripts)
 
 
 Installation and usage
@@ -36,20 +39,6 @@ There are two commands than you can use:
 -   `npm run watch` (build CSS/JS/SVG when files are changed)
 
 Important: if you’re using Git, don’t forget to add `node_modules` to your `.gitignore`, to avoid versioning the many files installed by npm.
-
-
-Activating a task and installing its dependencies
--------------------------------------------------
-
-There are 3 built-in tasks:
-
-- [sass](doc/task-sass.md) (Sass and Autoprefixer)
-- [svgsymbols](doc/task-svgsymbols.md) (SVG symbol sprites)
-- [jsconcat](doc/task-jsconcat.md) (Concatenate and minify JS scripts)
-
-To use a custom task, or 
-
-
 
 
 Configuring tasks
@@ -92,6 +81,7 @@ You can also share settings between objects, using an array-like syntax where st
 }
 ```
 
+
 How to write a new task
 -----------------------
 
@@ -99,7 +89,7 @@ If you want to write a new or different task (for example, one that transpiles E
 
 This script should export a function that takes a config object and does… what you want to do. See the existing tasks for examples!
 
-### Minimal example
+Here is a minimal example:
 
 ```js
 /**
@@ -107,17 +97,15 @@ This script should export a function that takes a config object and does… what
  */
 
 var gulp = require('gulp')
-var util = require('./../taskutils.js')
+var __ = require('./../taskutils.js')
 
 // Specific
-var deps = util.requires('mytask', {
-  doSomething: 'gulp-do-something@^1.2.3'
-})
+var doSomething = require('gulp-do-something')
 
 module.exports = function mytask(conf) {
-  return gulp.src(conf.src)      // take some files
-    .pipe(util.logerrors())      // tell gulp to show errors and continue
-    .pipe(deps.doSomething())    // use a gulp plugin to transform content
-    .pipe(gulp.dest(conf.dest))  // write resulting files to destination
+  return gulp.src(conf.src)     // take some files
+    .pipe(__.logerrors())       // tell gulp to show errors and continue
+    .pipe(doSomething())        // use a gulp plugin to transform content
+    .pipe(gulp.dest(conf.dest)) // write resulting files to destination
 }
 ```
