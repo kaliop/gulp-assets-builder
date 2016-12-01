@@ -4,8 +4,7 @@
   "version": "2.0.0",
   "scripts": {
     "build": "gulp build",
-    "watch": "gulp watch",
-    "debug": "gulp debug"
+    "watch": "gulp watch"
   },
   "devDependencies": {
     "glob": "^7.1.1",

@@ -3,8 +3,6 @@
  */
 'use strict'
 
-var event = process.env.npm_lifecycle_event
-
 var fs = require('fs')
 var gulp = require('gulp')
 var path = require('path')
@@ -40,8 +38,8 @@ module.exports = function assetsBuilder(config) {
     }
   }
 
-  // Register tasks unless we're in debug mode
-  if (event !== 'debug') Object.keys(activeScripts).forEach(function(name) {
+  // Register tasks
+  Object.keys(activeScripts).forEach(function(name) {
     var builder = require('./' + activeScripts[name])
     activeTasks.concat(register(config[key], key, builder))
   })
@@ -51,16 +49,5 @@ module.exports = function assetsBuilder(config) {
   gulp.task('watch', activeTasks.filter(function(x) {
     return x.indexOf('watch') === 0
   }))
-
-  // Test that files exist and dependencies
-  gulp.task('debug', function() {
-    var load = require('./helpers/load.js')
-    Object.keys(activeScripts).forEach(function(name) {
-      var jsonPath = './' + activeScripts[name].replace('.js', '.json')
-      var deps = require(jsonPath).dependencies
-      console.log(deps)
-      var test = load(name, deps)
-    })
-  })
 
 }
