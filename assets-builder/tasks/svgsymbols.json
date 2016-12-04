@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "gulp-svgmin": "^1.2.3",
-    "gulp-svg-symbols": "^2.0.2"
+    "gulp-svgmin": "^1.2",
+    "gulp-svg-symbols": "^2.0"
   }
 }

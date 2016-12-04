@@ -1,73 +1,94 @@
 'use strict'
 
-var notify = require('./notify.js')
+const notify = require('./notify.js')
+module.exports = normalizeConfigs
 
 /**
  * Normalize a list of config objects with `src`, `dest`
  * and optional `watch` properties.
- * @param {Object} baseConfig
  * @param {string} configName
+ * @param {Object} baseConfig
  * @returns {Array}
  */
-module.exports = function normalize(baseConfig, configName) {
-  var base = {}
-  var list = []
+function normalizeConfigs(configName, baseConfig) {
+  let base = {}
+  let list = []
   if (typeof baseConfig !== 'object') {
     notify({
-      title: 'Invalid \'' + configName + '\' config object',
-      message: 'Config type: ' + typeof baseConfig
+      title: 'Error: invalid \'' + configName + '\' config object',
+      details: 'Config type: ' + typeof baseConfig
     })
-    return []
+    return list
   }
   // Number or number-like keys are separate builds, other keys are shared config
-  Object.keys(baseConfig).forEach(function(key) {
-    var value = baseConfig[key]
+  for (let key in baseConfig) {
+    let value = baseConfig[key]
     if (isNaN(Number(key))) {
       base[key] = value
-    }
-    else if (typeof value === 'object') {
+    } else if (typeof value === 'object') {
       list.push(value)
     }
-  })
+  }
   // Only one build config
   if (list.length === 0) {
     list.push(base)
   }
   // Or add base values to individual configs
   else {
-    list = list.map(function(config) {
-      Object.keys(base).forEach(function(key) {
-        if (!(key in config)) config[key] = base[key]
-      })
-      return config
+    list = list.map(conf => {
+      for (let key in base) {
+        if ((key in conf) === false) conf[key] = base[key]
+      }
+      return conf
     })
   }
-  // Normalize the src and watch properties
-  var normalized = list.filter(function(config) {
-    return typeof config === 'object'
-  }).map(function(config) {
-    config.src = [].concat(config.src).filter(function(x) {
-      return typeof x === 'string' && x.trim() !== ''
-    })
-    if (config.watch === true) {
-      config.watch = config.src
-    }
-    return config
-  })
-  // Finally, only keep valid configs objects
-  return normalized.filter(function(config) {
-    var ok = typeof config.dest === 'string' &&
-      Array.isArray(config.src) &&
-      config.src.length > 0
-    if (!ok) {
-      var configText = JSON.stringify(config, null, 2)
+  return list
+    .filter(conf => typeof conf === 'object')
+    // Normalize the src and watch properties
+    .map(normalizeSrc)
+    // And only keep valid configs objects
+    .filter(conf => validateConfig(configName, conf))
+}
+
+/**
+ * Make sure the 'src' and 'watch' properties of an object are arrays of strings
+ * @param {object} conf
+ * @returns {object}
+ */
+function normalizeSrc(conf) {
+  const valid = s => typeof s === 'string' && s.trim() !== ''
+  let src = [].concat(conf.src).filter(valid)
+  let watch = false
+  if (conf.watch === true) {
+    watch = src
+  } else if (conf.watch) {
+    watch = [].concat(conf.watch).filter(valid)
+  }
+  conf.src = src
+  conf.watch = watch
+  return conf
+}
+
+/**
+ * Check that a config object is valid, show an error and drop
+ * that config otherwise.
+ * @param configName
+ * @param conf
+ * @returns {boolean}
+ */
+function validateConfig(configName, conf) {
+  if (typeof conf.dest === 'string' &&
+    Array.isArray(conf.src) &&
+    conf.src.length > 0) {
+    return true;
+  }
+  else {
+    notify({
+      title: 'Error: invalid \'' + configName + '\' config object',
+      details: JSON.stringify(conf, null, 2)
         .replace(/^{\n  /, '{ ')
         .replace(/\n}$/, ' }')
-      notify({
-        title: 'Invalid \'' + configName + '\' config object',
-        message: configText
-      })
-    }
-    return ok
-  })
+    })
+    return false
+  }
 }

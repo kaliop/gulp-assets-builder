@@ -3,14 +3,10 @@
  */
 'use strict'
 
-// Core & utils
-var gulp = require('gulp')
-var path = require('path')
-var __ = require('../taskutils.js')
-
-// Task-specific dependencies
-var deps = __.load('jsconcat', require('./jsconcat.json').dependencies)
-var uglify = deps['gulp-uglify']
+const gulp = require('gulp')
+const path = require('path')
+const tools = require('../tasktools.js')
+const uglify = require('gulp-uglify')
 
 /**
  * Make a JS build, optionally minified
@@ -19,17 +15,17 @@ var uglify = deps['gulp-uglify']
  * @property {string} conf.dest - output file name
  * @returns {*}
  */
-module.exports = function jsconcat(conf) {
+module.exports = function jsconcatBuilder(conf) {
   // Opt-out of minification with any falsy value
-  var minify = 'minify' in conf ? Boolean(conf.minify) : true
-  var dest = path.parse(conf.dest)
+  const minify = 'minify' in conf ? Boolean(conf.minify) : true
+  const dest = path.parse(conf.dest)
 
   return gulp.src(conf.src)
-    .pipe( __.logerrors() )
-    .pipe( __.sourcemaps.init() )
-    .pipe( __.concat(dest.base) )
-    .pipe( __.if(minify, uglify()) )
-    .pipe( __.size(dest.dir) )
-    .pipe( __.sourcemaps.write('.') )
+    .pipe( tools.errors() )
+    .pipe( tools.sourcemap.init() )
+    .pipe( tools.concat(dest.base) )
+    .pipe( tools.if(minify, uglify()) )
+    .pipe( tools.size(dest.dir) )
+    .pipe( tools.sourcemap.write('.') )
     .pipe( gulp.dest(dest.dir) )
 }

@@ -1,7 +1,7 @@
 {
   "name": "assets-builder",
   "private": true,
-  "version": "2.0.0",
+  "version": "3.0.0",
   "scripts": {
     "build": "gulp build",
     "watch": "gulp watch"
@@ -14,7 +14,10 @@
     "gulp-plumber": "^1.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-size": "^2.1.0",
-    "gulp-sourcemaps": "^1.9.1",
+    "gulp-sourcemaps": "^2.2.1",
     "gulp-util": "^3.0.7"
+  },
+  "engines": {
+    "node": ">=4.0"
   }
 }

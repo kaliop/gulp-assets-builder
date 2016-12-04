@@ -1,24 +1,23 @@
 'use strict'
 
-var gulp = require('gulp')
-var normalize = require('./normalize.js')
-var missing = require('./missing.js')
+const gulp = require('gulp')
+const normalize = require('./normalize.js')
+const missing = require('./missing.js')
 
 /**
  * Register matching 'build' and 'watch' gulp tasks and return their name
- * @param {Array|Object} configs - config object or array of config objects
  * @param {string} key - short name of task
+ * @param {Array|Object} configs - config object or array of config objects
  * @param {Function} builder - callback that takes a config object
  * @returns {Array} - names of registered tasks
  */
-module.exports = function register(configs, key, builder) {
-  configs = normalize(configs, key)
-  var taskNames = []
+module.exports = function register(key, configs, builder) {
+  let taskNames = []
 
-  configs.forEach(function(config, index) {
-    var id = key + (configs.length > 1 ? '.' + index : '')
-    var buildId = 'build.' + id
-    var watchId = 'watch.' + id
+  normalize(key, configs).forEach(function(config, index) {
+    const id = key + (configs.length > 1 ? '-' + (index+1) : '')
+    const buildId = 'build-' + id
+    const watchId = 'watch-' + id
 
     // Register build task
     gulp.task(buildId, function() {

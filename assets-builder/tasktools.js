@@ -1,14 +1,12 @@
 'use strict'
 
 var notify = require('./helpers/notify.js')
-var loadDep = require('./helpers/load.js')
-
 var concat = require('gulp-concat')
 var gulpIf = require('gulp-if')
 var plumber = require('gulp-plumber')
 var rename = require('gulp-rename')
 var size = require('gulp-size')
-var sourcemaps = require('gulp-sourcemaps')
+var sourcemap = require('gulp-sourcemaps')
 
 /**
  * Common tools for tasks. Includes:
@@ -24,16 +22,12 @@ module.exports = {
   'concat': concat,
   'if': gulpIf,
   'rename': rename,
-  'sourcemaps': sourcemaps,
-
-  // Helper function that returns an object with loaded modules
-  // OR throws an exception and logs information about missing modules
-  'load': loadDep,
+  'sourcemap': sourcemap,
 
   // Patch gulp.src's onerror method with gulp-plumber,
   // so that errors in a task are logged but don't kill the task.
   // Usage: gulp.src( … ).pipe( utils.plumbit() ).pipe( … )
-  'logerrors': function() {
+  'errors': function() {
     return plumber(notify)
   },
 

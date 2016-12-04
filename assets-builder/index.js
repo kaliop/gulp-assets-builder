@@ -1,13 +1,10 @@
-/**
- * @file Dynamically register gulp tasks
- */
 'use strict'
 
-var fs = require('fs')
-var gulp = require('gulp')
-var path = require('path')
-var notify = require('./helpers/notify.js')
-var register = require('./helpers/register.js')
+const fs = require('fs')
+const gulp = require('gulp')
+const path = require('path')
+const notify = require('./helpers/notify.js')
+const register = require('./helpers/register.js')
 
 /**
  * Set up assets-builder’s gulp tasks, based on available
@@ -19,35 +16,109 @@ module.exports = function assetsBuilder(config) {
   if (typeof config !== 'object') {
     notify({
       title: 'Error: Missing config',
-      colors: 'bold.red',
-      message: 'Make sure you call assets-builder with a config object'
+      details: 'Make sure you call assets-builder with a config object'
     })
+    process.exitCode = 1
     return
   }
 
-  var activeScripts = {}
-  var activeTasks = []
+  let activeScripts = {}
+  let activeTasks = []
 
   // Check that the task script exists
-  for (var key in config) {
-    var relPath = 'tasks/' + key.trim().replace('..', '') + '.js'
-    if (key.indexOf('_') !== 0 && fs.existsSync(__dirname + '/' + relPath)) {
+  for (let key in config) {
+    let relPath = 'tasks/' + key.trim().replace('..', '') + '.js'
+    if (key.indexOf('_') === 0) {
+      notify({
+        title: 'Warning: ignoring \'' + key + '\' config (starts with underscore)',
+        warn: true
+      })
+    }
+    else if (fs.existsSync(__dirname + '/' + relPath)) {
       activeScripts[key] = relPath
-    } else {
-      notify({ title: 'Ignoring task "' + key + '" (no file at ' + path.basename(__dirname) + '/' + relPath + ')' })
+    }
+    else {
+      notify({
+        title: 'Warning: ignoring \'' + key + '\' config (no file at ' + path.basename(__dirname) + '/' + relPath + ')',
+        warn: true
+      })
     }
   }
 
-  // Register tasks
-  Object.keys(activeScripts).forEach(function(name) {
-    var builder = require('./' + activeScripts[name])
-    activeTasks.concat(register(config[key], key, builder))
-  })
-  gulp.task('build', activeTasks.filter(function(x) {
-    return x.indexOf('build') === 0
-  }))
-  gulp.task('watch', activeTasks.filter(function(x) {
-    return x.indexOf('watch') === 0
-  }))
+  // Register individual tasks
+  try {
+    Object.keys(activeScripts).forEach(function(name) {
+      let builder = require('./' + activeScripts[name])
+      let tasks = register(name, config[name], builder)
+      activeTasks = activeTasks.concat(tasks)
+    })
+  }
+  catch(err) {
+    let dealtWith = false
+    if (err.code === 'MODULE_NOT_FOUND') {
+      let modules = checkDependencies(activeScripts)
+      let name = (err.message.match(/module '(.*)'/) || [null, null])[1]
+      // we alerted about that missing dependency already?
+      dealtWith = name && modules.indexOf(name) !== -1
+    }
+    if (dealtWith === false) {
+      throw err
+    }
+  }
 
+  // Register tasks groups
+  gulp.task('build', activeTasks.filter(x => x.indexOf('build') === 0))
+  gulp.task('watch', activeTasks.filter(x => x.indexOf('watch') === 0))
+
+  if (activeTasks.length === 0) {
+    notify({
+      title: 'Error: No tasks found',
+      details: 'assets-builder configuration was invalid, or tasks failed to load'
+    })
+  }
+}
+
+/**
+ * Load tasks' JSON files with dependencies, try loading each dependency
+ * and log the missing deps with instructions on how to install.
+ * Note: we are NOT resolving version conflicts of any kind.
+ * @param {Object} scripts
+ * @returns {Array} - names of missing modules
+ */
+function checkDependencies(scripts) {
+  let missing = []
+  // Try to load each dependency
+  for (const name in scripts) {
+    try {
+      const json = require('./' + scripts[name].replace('.js', '.json'))
+      let badModules = []
+      for (const key in json.dependencies) {
+        try { const x = require(key) }
+        catch(err) {
+          if (err.code === 'MODULE_NOT_FOUND') {
+            badModules.push({name: key, version: json.dependencies[key]})
+          }
+        }
+      }
+      if (badModules.length !== 0) {
+        missing.push({task: name, modules: badModules})
+      }
+    } catch(e) {}
+  }
+  // Print information we found
+  const modulesFlat = missing.reduce(function(arr, x) {return arr.concat(x.modules)}, [])
+  if (missing.length !== 0) {
+    const pad = '               '
+    const title = 'Error: missing dependencies for \''
+      + missing.map(function(x){ return x.task }).join('\', \'')
+      + '\''
+    notify({
+      title: missing.length > 1 ? title : title.replace('tasks:', 'task:'),
+      details: '\nTo fix this, install missing dependencies:\n\nnpm install -D "'
+      + modulesFlat.map(function(m){ return m.name + '@' + m.version }).join('" \\\n' + pad + '"')
+      + '"\n'
+    })
+  }
+  // Return names of missing modules
+  return modulesFlat.map(function(m) { return m.name })
 }

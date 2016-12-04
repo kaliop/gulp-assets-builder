@@ -1,11 +1,11 @@
 'use strict'
 
-var gutil = require('gulp-util')
+const gutil = require('gulp-util')
 
 // Using node-notifier should be optional
 // e.g. Developer installs it locally or globally on their workstation,
 // but we don't use it on a server environment
-var notifier = null;
+let notifier = null;
 try { notifier = require('node-notifier') } catch(err) {}
 
 /**
@@ -16,43 +16,45 @@ try { notifier = require('node-notifier') } catch(err) {}
  */
 module.exports = function notify(err) {
   // Prepare error message
-  var title = '[assets-builder] Error'
-  var message = ''
-  if (typeof err === 'string') {
-    message = err
-  }
-  else if (typeof err === 'object') {
+  let title = 'Error: ' + (typeof err === 'string' ? err : err.message)
+  let customTitle = ''
+  let details = ''
+  if (typeof err === 'object') {
     if (err.title) {
-      title = err.title
-    }
-    else if (err.plugin) {
-      title = '[' + err.plugin + '] Error'
+      customTitle = err.title
+    } else if (err.plugin) {
+      customTitle = '[' + err.plugin + '] Error'
     }
     if (err.file) {
-      title += ' in ' + err.file.split('/').pop()
+      customTitle += ' in ' + err.file.split('/').pop()
     }
-    // Some gulp plugins use the 'formatted' key with a message format
-    // that suits our needs better, but 'message' is more common.
-    message = err.formatted || err.message || ''
+    if (customTitle) {
+      title = customTitle
+    }
+    if (customTitle || err.details) {
+      // Some gulp plugins use the 'formatted' key with a message format
+      // that suits our needs better, but 'message' is more common.
+      details = err.details || err.formatted || err.message || ''
+    }
   }
 
   // Show error in console
-  var titleColor = gutil.colors.red
+  let titleColor = err.warn ? gutil.colors.reset : gutil.colors.red
   if (typeof err.colors === 'string') {
-    err.colors.split('.').forEach(function(name){
+    err.colors.split('.').forEach(name => {
       if (name in titleColor) titleColor = titleColor[name]
     })
   }
   gutil.log(
     titleColor(title),
-    message ? ('\n' + message).replace(/\n/g, '\n  ') : ''
+    details ? ('\n' + details).replace(/\n/g, '\n  ') : ''
   )
 
-  // And in system notifications if we can
-  if (notifier) {
+  // And in system notifications if we can (for errors only)
+  if (notifier && !err.warn) {
     notifier.notify({
       title: title,
-      message: message.replace(/\s*\n\s*/g, ' '),
+      message: details.replace(/\s*\n\s*/g, ' '),
       sound: true
     })
   }
@@ -63,5 +65,5 @@ module.exports = function notify(err) {
   }
 
   // Useful when throwing, as in throw notify({…})
-  return title + '\n' + message
+  return err
 }

@@ -3,14 +3,10 @@
  */
 'use strict'
 
-// Core & utils
-var gulp = require('gulp')
-var __ = require('./../taskutils.js')
-
-// Task-specific dependencies
-var deps = __.load('sass', require('./sass.json').dependencies)
-var autoprefixer = deps['gulp-autoprefixer']
-var sass = deps['gulp-sass']
+const gulp = require('gulp')
+const sass = require('gulp-sass')
+const tools = require('../tasktools.js')
+const autoprefixer = require('gulp-autoprefixer');
 
 /**
  * Build one or more Sass stylesheets
@@ -20,21 +16,19 @@ var sass = deps['gulp-sass']
  * @property {string} conf.browsers - Autoprefixer browser compat
  * @returns {*}
  */
-module.exports = function sass(conf) {
-  var sassOpts = {
+module.exports = function sassBuilder(conf) {
+  let sassOpts = {
     outputStyle: conf.outputStyle || 'compressed',
     includePaths: conf.includePaths || []
   }
-  var prefixOpts = {}
-  if (conf.browsers) {
-    prefixOpts.browsers = conf.browsers
-  }
+  let prefixOpts = conf.browsers ? {browsers: conf.browsers} : {}
+
   return gulp.src( conf.src )
-    .pipe( __.logerrors() )
-    .pipe( __.sourcemaps.init() )
+    .pipe( tools.errors() )
+    .pipe( tools.sourcemap.init() )
     .pipe( sass(sassOpts) )
     .pipe( autoprefixer(prefixOpts) )
-    .pipe( __.size(conf.dest) )
-    .pipe( __.sourcemaps.write('.') )
+    .pipe( tools.size(conf.dest) )
+    .pipe( tools.sourcemap.write('.') )
     .pipe( gulp.dest(conf.dest) )
 }

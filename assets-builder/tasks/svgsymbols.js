@@ -3,15 +3,11 @@
  */
 'use strict'
 
-// Core & utils
-var gulp = require('gulp')
-var path = require('path')
-var __ = require('./../taskutils.js')
-
-// Task-specific dependencies
-var deps = __.load('svgsymbols', require('./svgsymbols.json').dependencies)
-var svgmin = deps['gulp-svgmin']
-var symbols = deps['gulp-svg-symbols']
+const gulp = require('gulp')
+const path = require('path')
+const tools = require('../tasktools.js')
+const svgmin = require('gulp-svgmin')
+const symbols = require('gulp-svg-symbols')
 
 /**
  * Build and write a SVG symbol sprite
@@ -24,46 +20,45 @@ var symbols = deps['gulp-svg-symbols']
  * @property {string} conf.symbolClass - pattern for <svg> class attributes
  * @returns {*}
  */
-module.exports = function svgsymbols(conf) {
-  // Prepare options
-  var dest = path.parse(conf.dest)
-  var symbolId = conf.symbolId || 'icon-%f'
-  var symbolClass = conf.symbolClass || 'icon icon--%f'
-  var templates = [
+module.exports = function svgsymbolsBuilder(conf) {
+  const dest = path.parse(conf.dest)
+
+  // gulp-svg-symbols options
+  let symbolId = typeof conf.symbolId === 'string' ? conf.symbolId : 'icon-%f'
+  if (!/%f/.test(symbolId)) symbolId += '%f'
+  const templates = [
     __dirname + '/svgsymbols-sprite.svg',
     __dirname + '/svgsymbols-demo.html'
   ]
+  const doSprite = symbols({
+    id: symbolId,
+    className: conf.symbolClass || 'icon icon--%f',
+    svgClassname: conf.inline ? 'inline-sprite' : false,
+    templates: conf.demo ? templates : [templates[0]]
+  })
 
   // Rename input and output
-  var renameIn = __.rename(function(n) {
+  const renameIn = tools.rename(n => {
     n.basename = n.basename.toLowerCase().replace(/[^a-z0-9]/g,'')
   })
-  var renameOut = __.rename({
+  const renameOut = tools.rename({
     basename: dest.name
   })
 
   // gulp-svgmin options
-  var minify = svgmin(function(file) {
-    var name = path.basename(file.relative, path.extname(file.relative))
-    var ids = { cleanupIDs: { minify: true, prefix: 'def-' + name + '-' } }
+  const minify = svgmin(file => {
+    const name = path.basename(file.relative, path.extname(file.relative))
+    const ids = { cleanupIDs: { minify: true, prefix: 'def-' + name + '-' } }
     return { plugins: [ ids ] }
-  })
-
-  // gulp-svg-symbols options
-  var doSprite = symbols({
-    className: symbolClass,
-    id: symbolId + (/%f/.test(symbolId) ?  '' : '%f'),
-    svgClassname: conf.inline ? 'inline-sprite' : false,
-    templates: templates.slice(0, conf.demo ? 2 : 1)
   })
 
   // Build sprite (+demo page)
   return gulp.src( conf.src )
-    .pipe( __.logerrors() )
+    .pipe( tools.errors() )
     .pipe( renameIn )
     .pipe( minify )
     .pipe( doSprite )
     .pipe( renameOut )
-    .pipe( __.size(dest.dir) )
+    .pipe( tools.size(dest.dir) )
     .pipe( gulp.dest(dest.dir) )
 }

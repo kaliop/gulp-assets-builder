@@ -5,79 +5,127 @@ A collection of configurable [gulp](http://gulpjs.com/) tasks we use to build fr
 
 -   Flexible configuration
 -   Useful logs and system alerts
--   Built-in tasks: Sass with Autoprefixer, SVG sprites and JS minification
--   Easy to remove or edit built-in tasks, or write your own
-
-*Requirements:*
-
--   [Node.js](https://nodejs.org) >= 4.0
+-   Use the built-in tasks (Sass with Autoprefixer, SVG sprites, and simple JS minification) or write your own
 
 *Table of contents:*
 
 -   [Installation and usage](#installation-and-usage)
--   [Configuring tasks](#configuring-tasks)
--   [How to write a new task](#how-to-write-a-new-task)
+-   [Using tasks](#using-tasks)
+-   [Enable system notifications](#enable-system-notifications)
 -   Built-in tasks:
     - [sass](doc/task-sass.md) (Sass and Autoprefixer)
     - [svgsymbols](doc/task-svgsymbols.md) (SVG symbol sprites)
     - [jsconcat](doc/task-jsconcat.md) (Concatenate and minify JS scripts)
+-   [Multiple builds per task](#multiple-builds-per-task)
+-   [How to write a new task](#how-to-write-a-new-task)
 
 
 Installation and usage
 ----------------------
 
-Install:
+Requirements: [Node.js](https://nodejs.org) 4.x or above
 
-1.  [Download a ZIP with the assets-builder scripts and config](https://github.com/gradientz/assets-builder/archive/master.zip),
-2.  move its contents to your project dir,
-3.  and modify the config object in `gulpfile.js` to suit your needs.
-4.  Finally, in a command prompt, `cd` to your project dir and run `npm install`.
+Installing:
 
-There are two commands than you can use:
+1.  [Download a ZIP with the assets-builder scripts and config](https://github.com/gradientz/assets-builder/archive/master.zip) and unzip it in your projet directory.
+3.  Change the config object in `gulpfile.js`.
+4.  Finally, in a command prompt, go to your project dir and run:  
+`npm install`
 
--   `npm run build` (build CSS/JS/SVG once)
--   `npm run watch` (build CSS/JS/SVG when files are changed)
+Usage:
 
-Important: if you’re using Git, don’t forget to add `node_modules` to your `.gitignore`, to avoid versioning the many files installed by npm.
+-   `npm run build`: build assets once
+-   `npm run watch`: run in the background and build assets when source files are changed
 
 
-Configuring tasks
------------------
+Using tasks
+-----------
 
-Config objects have the following properties:
+To use one of the built-in tasks, you will need to do two things: 1) Configure the task and 2) Install its dependencies (if any).
 
--   Required `src`: paths or glob patterns (string or array of strings).
--   Required `dest`: a single path (string).
--   Optional `watch`: either the value `true` to reuse the `src` config, or a different set of paths or glob patterns (string or array of strings).
--   Some tasks may offer additional options (see the next section for details).
+### Task configuration
 
-You can make multiple builds by providing an array of config objects, instead of a single config object:
+Configuration goes in your `gulpfile.js` and generally looks like this:
+
+```js
+require('./assets-builder')({
+  taskname: {
+    src: ['some/files/to/use/*.*', 'some/other/files/*.*'],
+    dest: 'where/to/write/the/result',
+    watch: true // will watch the 'src' files
+  }
+})
+```
+
+The `src`, `dest` and `watch` keys are common to all tasks. Some tasks may offer other options too. For the built-in tasks, those options are documented in [the doc folder](doc).
+
+### Installing dependencies
+
+Task dependencies are *not* installed by default. The first time you try to run a task, with `npm run build`, you might see an error like this:
+
+```
+[21:28:37] Error: missing dependencies for 'sass', 'jsconcat', 'svgsymbols' 
+  
+  To fix this, install missing dependencies:
+  
+  npm install -D "gulp-autoprefixer@^3.1" \
+                 "gulp-sass@^2.3" \
+                 "gulp-uglify@^1.5" \
+                 "gulp-svgmin@^1.2.3" \
+                 "gulp-svg-symbols@^2.0.2"
+
+```
+
+You can run the provided command to install the missing dependencies. Then run `npm run build` again.
+
+
+Enable system notifications
+---------------------------
+
+To enable system notifications, install the `node-notifier` package:
+
+- Locally to the project: `npm install node-notifier`
+- Globally on your OS: `npm install -g node-notifier`
+
+You could also add it to the `devDependencies` (`npm install -D node-notifier`), but that’s not ideal if you want to put this code as a build step on a server.
+
+
+Multiple builds per task
+------------------------
+
+Each task can accept an array of config objects:
 
 ```js
 {
-  …,
   sass: [
-    { src: 'assets/styles/main.scss', watch: 'assets/styles/**/*.scss',
-      dest: 'public/css', browsers: ['last 3 versions', 'ie >= 11'] },
-    { src: 'assets/styles/other.scss', watch: false, outputStyle: 'compact',
-      dest: 'public/css', browsers: ['last 3 versions', 'ie >= 11'] }
+    {
+      src: 'assets/styles/main.scss',
+      watch: 'assets/styles/**/*.scss',
+      dest: 'public/css',
+      browsers: ['last 3 versions', 'ie >= 11']
+    },
+    {
+      src: 'assets/styles/other.scss',
+      dest: 'public/css',
+      browsers: ['last 3 versions', 'ie >= 11'],
+      outputStyle: 'compact'
+    },
   ]
-  …
 }
 ```
 
-You can also share settings between objects, using an array-like syntax where string keys are shared between configs, and number keys represent individual build configs. This is equivalent to the previous example:
+You can also share settings between objects, with an array-like syntax. This is equivalent to the previous example:
 
 ```js
 {
-  …,
   sass: {
+    // base settings
     dest: 'public/css',
     browsers: ['last 3 versions', 'ie >= 11'],
+    // builds with specific settings
     0: { src: 'assets/styles/main.scss', watch: 'assets/styles/**/*.scss' },
-    1: { src: 'assets/styles/other.scss', watch: false, outputStyle: 'compact' }
+    1: { src: 'assets/styles/other.scss', outputStyle: 'compact' }
   }
-  …
 }
 ```
 
@@ -85,27 +133,24 @@ You can also share settings between objects, using an array-like syntax where st
 How to write a new task
 -----------------------
 
-If you want to write a new or different task (for example, one that transpiles ES6 code with Babel and makes a JS bundle), you can `write a task script in `assets-builder/tasks`.
+Write your own task script in `assets-builder/tasks`. This script should export a function that accepts a config object.
 
-This script should export a function that takes a config object and does… what you want to do. See the existing tasks for examples!
-
-Here is a minimal example:
+### Minimal task example
 
 ```js
 /**
  * assets-builder/tasks/mytask.js 
  */
 
-var gulp = require('gulp')
-var __ = require('./../taskutils.js')
-
-// Specific
-var doSomething = require('gulp-do-something')
+const gulp = require('gulp')
+const tools = require('../tasktools.js')
+const doSomething = require('gulp-do-something')
 
 module.exports = function mytask(conf) {
   return gulp.src(conf.src)     // take some files
-    .pipe(__.logerrors())       // tell gulp to show errors and continue
+    .pipe(tools.errors())     // tell gulp to show errors and continue
     .pipe(doSomething())        // use a gulp plugin to transform content
+    .pipe(tools.size(conf.dest)) // log resulting file path/names and size
     .pipe(gulp.dest(conf.dest)) // write resulting files to destination
 }
 ```

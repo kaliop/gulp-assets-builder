@@ -1,7 +1,7 @@
 'use strict'
 
-var glob = require('glob')
-var notify = require('./notify.js')
+const glob = require('glob')
+const notify = require('./notify.js')
 
 /**
  * Check that a glob patterns actually matches at least one file,
@@ -10,12 +10,12 @@ var notify = require('./notify.js')
  * @param {string} taskId
  */
 module.exports = function missing(pattern, taskId) {
-  glob(pattern, function(err, found) {
+  glob(pattern, (err, found) => {
     if (err) notify(err)
-    if (found.length === 0) {
+    else if (found.length === 0) {
       notify({
-        title: 'Missing \'' + taskId + '\' sources',
-        message: 'Nothing at \'' + pattern + '\''
+        title: 'Warning: missing \'' + taskId + '\' sources: ' + pattern,
+        warn: true
       })
     }
   })
