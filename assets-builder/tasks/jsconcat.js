@@ -17,14 +17,14 @@ const uglify = require('gulp-uglify')
  */
 module.exports = function jsconcatBuilder(conf) {
   // Opt-out of minification with any falsy value
-  const minify = 'minify' in conf ? Boolean(conf.minify) : true
+  const doMinify = 'minify' in conf ? Boolean(conf.minify) : true
   const dest = path.parse(conf.dest)
 
   return gulp.src(conf.src)
     .pipe( tools.errors() )
     .pipe( tools.sourcemap.init() )
     .pipe( tools.concat(dest.base) )
-    .pipe( tools.if(minify, uglify()) )
+    .pipe( tools.if(doMinify, uglify()) )
     .pipe( tools.size(dest.dir) )
     .pipe( tools.sourcemap.write('.') )
     .pipe( gulp.dest(dest.dir) )

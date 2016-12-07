@@ -1,29 +1,28 @@
 /**
- * @file Sass + Autoprefixer
+ * @file LESS + Autoprefixer
  */
 'use strict'
 
 const gulp = require('gulp')
 const path = require('path')
-const sass = require('gulp-sass')
+const less = require('gulp-less')
 const tools = require('../tasktools.js')
 const autoprefixer = require('gulp-autoprefixer');
 
 /**
- * Build one or more Sass stylesheets
+ * Build one or more LESS stylesheets
  * @param {Object} conf
- * @property {Array|string} conf.src - glob patterns of Sass files to build
+ * @property {Array|string} conf.src - glob patterns of LESS files to build
  * @property {string} conf.dest - output folder or file name
  * @property {string} conf.browsers - Autoprefixer browser compat
- * @property {string} conf.outputStyle - Sass output style
  * @property {Array}  conf.includePaths - Folders to look for '@import's in
  * @returns {*}
  */
-module.exports = function sassBuilder(conf) {
+module.exports = function lessBuilder(conf) {
   const prefixOptions = {}
-  const sassOptions = {outputStyle: conf.outputStyle || 'compressed'}
+  const lessOptions = {}
   if (conf.browsers) prefixOptions.browsers = conf.browsers
-  if (conf.includePaths) sassOptions.paths = conf.includePaths
+  if (conf.includePaths) lessOptions.paths = conf.includePaths
 
   const dest = path.parse(conf.dest)
   const doConcat = dest.ext === '.css'
@@ -33,7 +32,7 @@ module.exports = function sassBuilder(conf) {
   return gulp.src( conf.src )
     .pipe( tools.errors() )
     .pipe( tools.sourcemap.init() )
-    .pipe( sass(sassOptions) )
+    .pipe( less(lessOptions) )
     .pipe( autoprefixer(prefixOptions) )
     .pipe( tools.if(doConcat, tools.concat(file)) )
     .pipe( tools.size(dir) )

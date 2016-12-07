@@ -1,9 +1,9 @@
-# Task: compile Sass with Autoprefixer
+# Task: compile LESS with Autoprefixer
 
-- Config key: `sass`
-- Source: `assets-builder/tasks/sass.js`
+- Config key: `less`
+- Source: `assets-builder/tasks/less.js`
 
-Runs node-sass and autoprefixer.
+Compile with gulp-less and run through Autoprefixer. Optionally concatenates files.
 
 ## Options
 
@@ -11,7 +11,7 @@ Runs node-sass and autoprefixer.
 {
   // (Required) Source can be a single Sass stylesheet
   // or pattern, or an array of paths or patterns
-  src: 'assets/styles/*.scss',
+  src: 'assets/styles/*.less',
 
   // (Required) Destination can be a folder name, or a filename ending in '.css'.
   // The main difference is when building more than one Sass stylesheet.
@@ -20,16 +20,12 @@ Runs node-sass and autoprefixer.
   dest: 'public/css',
 
   // (Optional) File patterns to watch for changes
-  watch: 'assets/styles/**/*.scss',
+  watch: 'assets/styles/**/*.less',
 
   // (Optional) Autoprefixer: target browsers
   browsers: ['last 3 versions'],
 
-  // (Optional) Sass output style
-  // Defaults to 'compressed', can also be: 'nested', 'expanded', 'compact'
-  outputStyle: 'compressed',
-
-  // (Optional) Sass include paths (for resolving @import)
+  // (Optional) LESS include paths (for resolving @import)
   includePaths: ['node_modules']
 }
 ```

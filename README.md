@@ -13,6 +13,7 @@ A collection of configurable [gulp](http://gulpjs.com/) tasks we use to build fr
 -   [Using tasks](#using-tasks)
 -   [Enable system notifications](#enable-system-notifications)
 -   Built-in tasks:
+    - [less](doc/task-less.md) (LESS and Autoprefixer)
     - [sass](doc/task-sass.md) (Sass and Autoprefixer)
     - [svgsymbols](doc/task-svgsymbols.md) (SVG symbol sprites)
     - [jsconcat](doc/task-jsconcat.md) (Concatenate and minify JS scripts)
@@ -146,11 +147,11 @@ const gulp = require('gulp')
 const tools = require('../tasktools.js')
 const doSomething = require('gulp-do-something')
 
-module.exports = function mytask(conf) {
-  return gulp.src(conf.src)     // take some files
-    .pipe(tools.errors())     // tell gulp to show errors and continue
-    .pipe(doSomething())        // use a gulp plugin to transform content
+module.exports = function mytaskBuilder(conf) {
+  return gulp.src(conf.src)      // take some files
+    .pipe(tools.errors())        // tell gulp to show errors and continue
+    .pipe(doSomething())         // use a gulp plugin to transform content
     .pipe(tools.size(conf.dest)) // log resulting file path/names and size
-    .pipe(gulp.dest(conf.dest)) // write resulting files to destination
+    .pipe(gulp.dest(conf.dest))  // write resulting files to destination
 }
 ```

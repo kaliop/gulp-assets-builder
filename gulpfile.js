@@ -9,14 +9,15 @@ require('./assets-builder')({
   // If you want to use the built-in 'sass', 'jsconcat' or 'svgsymbols'
   // tasks, remove the '_' and adapt the configs to your folder structure.
 
-  sass: {
+  _sass: {
     src:   'source/styles/*.scss',
     watch: 'source/styles/**/*.scss',
     dest:  'public/css',
+    includePaths: ['node_modules'],
     browsers: ['last 3 versions', 'ie >= 11', 'ios >= 9', 'android >= 5']
   },
 
-  jsconcat: {
+  _jsconcat: {
     src: [
       'node_modules/jquery/dist/jquery.slim.min.js',
       'source/scripts/*.js'
@@ -25,7 +26,7 @@ require('./assets-builder')({
     watch: true // watch the src files
   },
 
-  svgsymbols: [
+  _svgsymbols: [
     {
       src: 'source/icons/critical/*.svg',
       dest: 'public/svg/critical.svg',
