@@ -13,7 +13,7 @@ A collection of configurable [gulp](http://gulpjs.com/) tasks we use to build fr
 -   [Using tasks](#using-tasks)
 -   [Enable system notifications](#enable-system-notifications)
 -   Built-in tasks:
-    - [less](doc/task-less.md) (LESS and Autoprefixer)
+    - [less](doc/task-less.md) (Less and Autoprefixer)
     - [sass](doc/task-sass.md) (Sass and Autoprefixer)
     - [svgsymbols](doc/task-svgsymbols.md) (SVG symbol sprites)
     - [jsconcat](doc/task-jsconcat.md) (Concatenate and minify JS scripts)

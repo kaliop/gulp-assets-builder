@@ -1,9 +1,9 @@
-# Task: compile LESS with Autoprefixer
+# Task: compile Less with Autoprefixer
 
 - Config key: `less`
 - Source: `assets-builder/tasks/less.js`
 
-Compile with gulp-less and run through Autoprefixer. Optionally concatenates files.
+Compile with Less and run through Autoprefixer. Optionally concatenates files.
 
 ## Options
 

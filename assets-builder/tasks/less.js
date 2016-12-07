@@ -1,5 +1,5 @@
 /**
- * @file LESS + Autoprefixer
+ * @file Less + Autoprefixer
  */
 'use strict'
 
@@ -10,9 +10,9 @@ const tools = require('../tasktools.js')
 const autoprefixer = require('gulp-autoprefixer');
 
 /**
- * Build one or more LESS stylesheets
+ * Build one or more Less stylesheets
  * @param {Object} conf
- * @property {Array|string} conf.src - glob patterns of LESS files to build
+ * @property {Array|string} conf.src - glob patterns of Less files to build
  * @property {string} conf.dest - output folder or file name
  * @property {string} conf.browsers - Autoprefixer browser compat
  * @property {Array}  conf.includePaths - Folders to look for '@import's in
