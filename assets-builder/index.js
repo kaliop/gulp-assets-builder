@@ -22,12 +22,12 @@ module.exports = function assetsBuilder(config) {
     return
   }
 
-  let activeScripts = {}
-  let activeTasks = []
+  const activeScripts = {}
+  const activeTasks = []
 
   // Check that the task script exists
-  for (let key in config) {
-    let relPath = 'tasks/' + key.trim().replace('..', '') + '.js'
+  for (const key in config) {
+    const relPath = 'tasks/' + key.trim().replace('..', '') + '.js'
     if (key.indexOf('_') === 0) {
       notify({
         title: 'Warning: ignoring \'' + key + '\' config (starts with underscore)',
@@ -48,16 +48,16 @@ module.exports = function assetsBuilder(config) {
   // Register individual tasks
   try {
     Object.keys(activeScripts).forEach(function(name) {
-      let builder = require('./' + activeScripts[name])
-      let tasks = register(name, config[name], builder)
+      const builder = require('./' + activeScripts[name])
+      const tasks = register(name, config[name], builder)
       activeTasks = activeTasks.concat(tasks)
     })
   }
   catch(err) {
     let dealtWith = false
     if (err.code === 'MODULE_NOT_FOUND') {
-      let modules = checkDependencies(activeScripts)
-      let name = (err.message.match(/module '(.*)'/) || [null, null])[1]
+      const modules = checkDependencies(activeScripts)
+      const name = (err.message.match(/module '(.*)'/) || [null, null])[1]
       // we alerted about that missing dependency already?
       dealtWith = name && modules.indexOf(name) !== -1
     }
@@ -86,12 +86,12 @@ module.exports = function assetsBuilder(config) {
  * @returns {Array} - names of missing modules
  */
 function checkDependencies(scripts) {
-  let missing = []
+  const missing = []
   // Try to load each dependency
   for (const name in scripts) {
     try {
       const json = require('./' + scripts[name].replace('.js', '.json'))
-      let badModules = []
+      const badModules = []
       for (const key in json.dependencies) {
         try { const x = require(key) }
         catch(err) {
@@ -106,7 +106,7 @@ function checkDependencies(scripts) {
     } catch(e) {}
   }
   // Print information we found
-  const modulesFlat = missing.reduce(function(arr, x) {return arr.concat(x.modules)}, [])
+  const modulesFlat = missing.reduce((arr, x) => arr.concat(x.modules), [])
   if (missing.length !== 0) {
     const pad = '               '
     const title = 'Error: missing dependencies for \''

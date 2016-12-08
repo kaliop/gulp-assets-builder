@@ -11,8 +11,8 @@ module.exports = normalizeConfigs
  * @returns {Array}
  */
 function normalizeConfigs(configName, baseConfig) {
-  let base = {}
-  let list = []
+  const base = {}
+  const list = []
   if (typeof baseConfig !== 'object') {
     notify({
       title: 'Error: invalid \'' + configName + '\' config object',
@@ -21,8 +21,8 @@ function normalizeConfigs(configName, baseConfig) {
     return list
   }
   // Number or number-like keys are separate builds, other keys are shared config
-  for (let key in baseConfig) {
-    let value = baseConfig[key]
+  for (const key in baseConfig) {
+    const value = baseConfig[key]
     if (isNaN(Number(key))) {
       base[key] = value
     } else if (typeof value === 'object') {
@@ -36,7 +36,7 @@ function normalizeConfigs(configName, baseConfig) {
   // Or add base values to individual configs
   else {
     list = list.map(conf => {
-      for (let key in base) {
+      for (const key in base) {
         if ((key in conf) === false) conf[key] = base[key]
       }
       return conf
@@ -57,13 +57,8 @@ function normalizeConfigs(configName, baseConfig) {
  */
 function normalizeSrc(conf) {
   const valid = s => typeof s === 'string' && s.trim() !== ''
-  let src = [].concat(conf.src).filter(valid)
-  let watch = false
-  if (conf.watch === true) {
-    watch = src
-  } else if (conf.watch) {
-    watch = [].concat(conf.watch).filter(valid)
-  }
+  const src = [].concat(conf.src).filter(valid)
+  const watch = conf.watch === true ? src : [].concat(conf.watch).filter(valid)
   conf.src = src
   conf.watch = watch
   return conf
@@ -72,14 +67,12 @@ function normalizeSrc(conf) {
 /**
  * Check that a config object is valid, show an error and drop
  * that config otherwise.
- * @param configName
- * @param conf
+ * @param {string} configName
+ * @param {object} conf
  * @returns {boolean}
  */
 function validateConfig(configName, conf) {
-  if (typeof conf.dest === 'string' &&
-    Array.isArray(conf.src) &&
-    conf.src.length > 0) {
+  if (typeof conf.dest === 'string' && Array.isArray(conf.src) && conf.src.length > 0) {
     return true;
   }
   else {

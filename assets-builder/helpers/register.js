@@ -12,9 +12,9 @@ const missing = require('./missing.js')
  * @returns {Array} - names of registered tasks
  */
 module.exports = function register(key, configs, builder) {
-  let taskNames = []
+  const taskNames = []
 
-  normalize(key, configs).forEach(function(config, index) {
+  normalize(key, configs).forEach(function(conf, index) {
     const id = key + (configs.length > 1 ? '-' + (index+1) : '')
     const buildId = 'build-' + id
     const watchId = 'watch-' + id
@@ -22,18 +22,18 @@ module.exports = function register(key, configs, builder) {
     // Register build task
     gulp.task(buildId, function() {
       // notify about paths or patterns that match no files
-      config.src.forEach(function(pattern) {
+      conf.src.forEach(function(pattern) {
         missing(pattern, id)
       })
       // do the actual building
-      builder(config)
+      builder(conf)
     })
     taskNames.push(buildId)
 
     // Register matching watch task
-    if (config.watch) {
+    if (Array.isArray(conf.watch) && conf.watch.length > 0) {
       gulp.task(watchId, function() {
-        gulp.watch(config.watch, [buildId])
+        gulp.watch(conf.watch, [buildId])
       })
       taskNames.push(watchId)
     }
