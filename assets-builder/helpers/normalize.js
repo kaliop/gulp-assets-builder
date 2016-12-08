@@ -1,48 +1,52 @@
 'use strict'
 
 const notify = require('./notify.js')
-module.exports = normalizeConfigs
+module.exports = normalizeUserConfig
 
 /**
- * Normalize a list of config objects with `src`, `dest`
- * and optional `watch` properties.
+ * Take the user's task config (which can be a single object,
+ * an array of config objects, or an array-like object with common
+ * properties (text keys) and several build configs (numeric keys).
+ * Return an array of complete and normalized config objects.
  * @param {string} configName
- * @param {Object} baseConfig
+ * @param {Object} userConfig
  * @returns {Array}
  */
-function normalizeConfigs(configName, baseConfig) {
-  const base = {}
-  const list = []
-  if (typeof baseConfig !== 'object') {
+function normalizeUserConfig(configName, userConfig) {
+  if (typeof userConfig !== 'object') {
     notify({
       title: 'Error: invalid \'' + configName + '\' config object',
-      details: 'Config type: ' + typeof baseConfig
+      details: 'Config type: ' + typeof userConfig
     })
-    return list
+    return []
   }
-  // Number or number-like keys are separate builds, other keys are shared config
-  for (const key in baseConfig) {
-    const value = baseConfig[key]
+
+  // Separate between text keys and array or array-like indexes
+  const base = {}
+  const list = []
+  for (const key in userConfig) {
+    const value = userConfig[key]
     if (isNaN(Number(key))) {
       base[key] = value
     } else if (typeof value === 'object') {
       list.push(value)
     }
   }
-  // Only one build config
   if (list.length === 0) {
-    list.push(base)
+    list.push({})
   }
-  // Or add base values to individual configs
-  else {
-    list = list.map(conf => {
-      for (const key in base) {
-        if ((key in conf) === false) conf[key] = base[key]
+
+  // Copy from base config values to individual config objects
+  for (const key in base) {
+    for (const conf of list) {
+      if ((key in conf) === false) {
+        conf[key] = base[key]
       }
-      return conf
-    })
+    }
   }
+
   return list
+    // Sanity check
     .filter(conf => typeof conf === 'object')
     // Normalize the src and watch properties
     .map(normalizeSrc)

@@ -12,7 +12,6 @@ const register = require('./helpers/register.js')
  * @param {Object} config
  */
 module.exports = function assetsBuilder(config) {
-
   if (typeof config !== 'object') {
     notify({
       title: 'Error: Missing config',
@@ -22,10 +21,8 @@ module.exports = function assetsBuilder(config) {
     return
   }
 
-  const activeScripts = {}
-  const activeTasks = []
-
   // Check that the task script exists
+  const scripts = {}
   for (const key in config) {
     const relPath = 'tasks/' + key.trim().replace('..', '') + '.js'
     if (key.indexOf('_') === 0) {
@@ -35,90 +32,46 @@ module.exports = function assetsBuilder(config) {
       })
     }
     else if (fs.existsSync(__dirname + '/' + relPath)) {
-      activeScripts[key] = relPath
+      scripts[key] = __dirname + '/' + relPath
     }
     else {
       notify({
-        title: 'Warning: ignoring \'' + key + '\' config (no file at ' + path.basename(__dirname) + '/' + relPath + ')',
+        title: 'Warning: ignoring \'' + key + '\' config (no file at '
+          + path.basename(__dirname) + '/' + relPath + ')',
         warn: true
       })
     }
   }
 
   // Register individual tasks
+  const tasks = []
   try {
-    Object.keys(activeScripts).forEach(function(name) {
-      const builder = require('./' + activeScripts[name])
-      const tasks = register(name, config[name], builder)
-      activeTasks = activeTasks.concat(tasks)
-    })
+    for (const name in scripts) {
+      const builder = require(scripts[name])
+      register(name, config[name], builder).forEach(t => tasks.push(t))
+    }
   }
   catch(err) {
-    let dealtWith = false
+    let knownMissing = false
     if (err.code === 'MODULE_NOT_FOUND') {
-      const modules = checkDependencies(activeScripts)
-      const name = (err.message.match(/module '(.*)'/) || [null, null])[1]
-      // we alerted about that missing dependency already?
-      dealtWith = name && modules.indexOf(name) !== -1
+      const missing = require('./helpers/dependencies.js')(scripts)
+      const name = (err.message.match(/module '(.*)'/) || [null,null])[1]
+      // did we alert about that missing dependency already?
+      knownMissing = name && missing.indexOf(name) !== -1
     }
-    if (dealtWith === false) {
+    if (!knownMissing) {
       throw err
     }
   }
 
   // Register tasks groups
-  gulp.task('build', activeTasks.filter(x => x.indexOf('build') === 0))
-  gulp.task('watch', activeTasks.filter(x => x.indexOf('watch') === 0))
+  gulp.task('build', tasks.filter(s => s.includes('build')))
+  gulp.task('watch', tasks.filter(s => s.includes('watch')))
 
-  if (activeTasks.length === 0) {
+  if (tasks.length === 0) {
     notify({
       title: 'Error: No tasks found',
       details: 'assets-builder configuration was invalid, or tasks failed to load'
     })
   }
-}
-
-/**
- * Load tasks' JSON files with dependencies, try loading each dependency
- * and log the missing deps with instructions on how to install.
- * Note: we are NOT resolving version conflicts of any kind.
- * @param {Object} scripts
- * @returns {Array} - names of missing modules
- */
-function checkDependencies(scripts) {
-  const missing = []
-  // Try to load each dependency
-  for (const name in scripts) {
-    try {
-      const json = require('./' + scripts[name].replace('.js', '.json'))
-      const badModules = []
-      for (const key in json.dependencies) {
-        try { const x = require(key) }
-        catch(err) {
-          if (err.code === 'MODULE_NOT_FOUND') {
-            badModules.push({name: key, version: json.dependencies[key]})
-          }
-        }
-      }
-      if (badModules.length !== 0) {
-        missing.push({task: name, modules: badModules})
-      }
-    } catch(e) {}
-  }
-  // Print information we found
-  const modulesFlat = missing.reduce((arr, x) => arr.concat(x.modules), [])
-  if (missing.length !== 0) {
-    const pad = '               '
-    const title = 'Error: missing dependencies for \''
-      + missing.map(function(x){ return x.task }).join('\', \'')
-      + '\''
-    notify({
-      title: missing.length > 1 ? title : title.replace('tasks:', 'task:'),
-      details: '\nTo fix this, install missing dependencies:\n\nnpm install -D "'
-      + modulesFlat.map(function(m){ return m.name + '@' + m.version }).join('" \\\n' + pad + '"')
-      + '"\n'
-    })
-  }
-  // Return names of missing modules
-  return modulesFlat.map(function(m) { return m.name })
 }
