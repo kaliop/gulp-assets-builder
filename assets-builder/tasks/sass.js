@@ -21,9 +21,11 @@ const autoprefixer = require('gulp-autoprefixer');
  */
 module.exports = function sassBuilder(conf) {
   const prefixOptions = {}
-  const sassOptions = {outputStyle: conf.outputStyle || 'compressed'}
   if (conf.browsers) prefixOptions.browsers = conf.browsers
-  if (conf.includePaths) sassOptions.paths = conf.includePaths
+  const sassOptions = {
+    outputStyle: conf.outputStyle || 'compressed',
+    includePaths: conf.includePaths || []
+  }
 
   const dest = path.parse(conf.dest)
   const doConcat = dest.ext === '.css'

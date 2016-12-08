@@ -20,8 +20,8 @@ const autoprefixer = require('gulp-autoprefixer');
  */
 module.exports = function lessBuilder(conf) {
   const prefixOptions = {}
-  const lessOptions = {}
   if (conf.browsers) prefixOptions.browsers = conf.browsers
+  const lessOptions = {}
   if (conf.includePaths) lessOptions.paths = conf.includePaths
 
   const dest = path.parse(conf.dest)
