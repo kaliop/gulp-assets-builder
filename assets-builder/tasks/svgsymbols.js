@@ -37,12 +37,14 @@ module.exports = function svgsymbolsBuilder(conf) {
     templates: conf.demo ? templates : [templates[0]]
   })
 
-  // Rename input and output
-  const renameIn = tools.rename(n => {
-    n.basename = n.basename.toLowerCase().replace(/[^a-z0-9]/g,'')
+  // Simplify input filename before using it in id attributes
+  const renameIn = tools.rename(f => {
+    f.basename = f.basename.toLowerCase().replace(/[^a-z0-9]/g,'')
   })
-  const renameOut = tools.rename({
-    basename: dest.name
+  // Rename output files to the desired destination name
+  const renameOut = tools.rename(f => {
+    f.basename = dest.name
+    f.extname = dest.ext + (f.extname === '.html' ? '.html' : '')
   })
 
   // gulp-svgmin options
