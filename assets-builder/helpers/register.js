@@ -14,8 +14,8 @@ const missing = require('./missing.js')
 module.exports = function register(key, configs, builder) {
   const taskNames = []
 
-  normalize(key, configs).forEach(function(conf, index) {
-    const id = key + (configs.length > 1 ? '-' + (index+1) : '')
+  normalize(key, configs).forEach(function(conf, index, normalized) {
+    const id = key + (normalized.length > 1 ? '-' + (index+1) : '')
     const buildId = 'build-' + id
     const watchId = 'watch-' + id
 
