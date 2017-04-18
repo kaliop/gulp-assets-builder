@@ -1,9 +1,1 @@
-# Telling git archive (and hopefully GitHub) to only
-# export the example package.json, example gulpfile.js,
-# and the assets-builder directory.
-.editorconfig export-ignore
-.gitattributes export-ignore
-.gitignore export-ignore
-/doc export-ignore
-/LICENSE export-ignore
-/README.md export-ignore
+/test  export-ignore

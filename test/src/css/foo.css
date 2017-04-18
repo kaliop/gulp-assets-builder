@@ -1,0 +1,8 @@
+/**
+ * Test CSS minification
+ */
+
+.foo {
+  color: black;
+  background-color: white;
+}

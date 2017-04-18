@@ -1,0 +1,10 @@
+/*! just a test */
+/**
+ * Test autoprefixer support
+ */
+
+.bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

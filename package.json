@@ -1,23 +1,27 @@
 {
   "name": "assets-builder",
   "private": true,
-  "version": "3.0.2",
+  "version": "4.0.0",
+  "engines": {
+    "node": ">=4.0, <7"
+  },
   "scripts": {
-    "build": "gulp build",
-    "watch": "gulp watch"
+    "build": "cross-env NODE_NOTIFIER=1 gulp build",
+    "watch": "cross-env NODE_NOTIFIER=1 gulp watch"
   },
   "devDependencies": {
-    "glob": "^7.1.1",
-    "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.1",
-    "gulp-if": "^2.0.2",
-    "gulp-plumber": "^1.1.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-size": "^2.1.0",
-    "gulp-sourcemaps": "^2.2.1",
-    "gulp-util": "^3.0.7"
+    "cross-env": "^4.0",
+    "gulp": "^3.9",
+    "gulp-task-maker": "^1.0"
   },
-  "engines": {
-    "node": ">=4.0"
-  }
+  "dependencies": {
+    "jquery": "^3.2",
+    "normalize.css": "^6.0"
+  },
+  "browserslist": [
+    "last 3 versions",
+    "ios >= 9",
+    "android >= 5",
+    "ie >= 11"
+  ]
 }
