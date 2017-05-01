@@ -1,8 +1,7 @@
-# Task: compile Sass stylesheets
+# Task: concatenate and minify CSS
 
 ## Features
 
-- Compile Sass (`.scss` only)
 - Concatenate files
 - Autoprefixer support
 - Sourcemaps support
@@ -11,20 +10,20 @@
 ## Options
 
 ```js
-require('gulp-task-maker').task('gulp-tasks/sass.js', {
-  // (Required) Source can be a single Sass stylesheet
+require('gulp-task-maker').task('gulp-tasks/mincss.js', {
+  // (Required) Source can be a single stylesheet
   // or pattern, or an array of paths or patterns
-  src: 'assets/styles/*.scss',
+  src: 'assets/styles/*.css',
 
   // (Required) Destination can be a folder name, or a filename ending in '.css'.
-  // The main difference is when building more than one Sass stylesheet.
+  // The main difference is when building more than one stylesheet.
   // - Filename ending in '.css': the result will be concatenated
   // - Otherwise: original filenames are used, and put in the destination folder.
-  dest: 'public/css',
+  dest: 'public/css/main.css',
 
   // (Optional; defaults to false)
   // File patterns to watch for changes
-  watch: 'assets/styles/**/*.less',
+  watch: true,
 
   // (Optional; defaults to true)
   // Should we minify with csso?
@@ -33,10 +32,6 @@ require('gulp-task-maker').task('gulp-tasks/sass.js', {
   // (Optional; defaults to '.'; false to disable)
   // Where should we write sourcemaps (relative to 'dest')
   sourcemaps: '.',
-
-  // (Optional; defaults shown below)
-  // gulp-sass options
-  sass: { outputStyle: 'compact', includePaths: ['.'] },
 
   // (Optional; defaults shown below; false to disable)
   // gulp-autoprefixer options

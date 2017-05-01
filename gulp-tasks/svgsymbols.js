@@ -19,12 +19,12 @@ const symbols = require('gulp-svg-symbols')
  */
 module.exports = function svgsymbolsBuilder(config, tools) {
   config = Object.assign({
-    sourcemaps: false,
+    minify: true,
     demo: false,
     id: 'icon-%f',
     slug: file => file.toLowerCase().replace(/[^a-z0-9]/g,''),
     svgClassname: false
-  }, config)
+  }, config, { sourcemaps: false })
 
   // rename files internally so we can use the simplified names in ids
   // (both in svgmin and gulp-svg-symbols)
@@ -69,7 +69,7 @@ module.exports = function svgsymbolsBuilder(config, tools) {
   // Build sprite (+demo page)
   return tools.commonBuilder(config, [
     renameInputTransform,
-    minifyTransform,
+    config.minify && minifyTransform,
     spriteTransform,
     renameOutputTransform
   ])

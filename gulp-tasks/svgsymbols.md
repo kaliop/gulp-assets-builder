@@ -1,37 +1,47 @@
-# Task: SVG symbol sprites
+# Task: build SVG symbol sprites
 
-- Config key: `svgsymbols`
-- Source: `assets-builder/tasks/svgsymbols.js`
+## Features
 
-Takes a bunch of SVG files and make a [SVG symbol sprite](https://fvsch.com/code/svg-icons/how-to/), to be used inline in your HTML pages or as an external resource.
-
-This task can also output a nice HTML demo page (see options).
+- Takes individual SVG images and generates a symbol sprite
+- Generates a HTML demo page for each sprite
+- Minifies with svgo
 
 ## Options
 
 ```js
-{
-  // (Required) Source SVG images
-  src: 'assets/icons/main/*.svg',
+require('gulp-task-maker').task('gulp-tasks/svgsymbols.js', {
+  // (Required) Source can be a single script or pattern,
+  // or an array of paths or patterns
+  src: 'assets/scripts/*.js',
 
-  // (Required) Destination must be a file name
-  dest: 'public/svg/main.svg',
+  // (Required) Destination must be a filename ending in '.svg'.
+  dest: 'public/css/main.svg',
 
-  // (Optional) File patterns to watch for changes, or `true`
-  // to use the same value as the src property
+  // (Optional; defaults to false)
+  // File patterns to watch for changes
   watch: true,
 
-  // (Optional) Output a HTML demo page alongside the sprite
+  // (Optional; defaults to true)
+  // Should we minify with svgo?
+  // Note: when disabling svgo, some features such as internal references may break
+  minify: true,
+  
+  // (Optional; defaults to the string shown below)
+  // Pattern for the symbol’s id attribute.
+  // '%f' is the cleaned-up original filename.
+  id: 'icon-%f',
+
+  // (Optional; defaults to false)
+  // Should we make a HTML demo page?
   demo: false,
 
-  // (Optional) Add attributes for an inline <svg> sprite
-  inline: false,
+  // (Optional; defaults to false)
+  // Add a class name on the sprite's root <svg> element?
+  // Can be useful for sprites you want to directly include in a web page.
+  svgClassname: 'inline-sprite',
 
-  // (Optional) Pattern to use for symbol id attributes. '%f' is the
-  // original filename with only lowercase letters and digits.
-  symbolId: 'icon-%f',
-
-  // (Optional) Class name(s) to use in HTML usage examples.
-  symbolClass: 'icon icon--%f'
-}
+  // (Optional; defaults to the function shown below)
+  // Function that cleans up file names to be used in the symbol's id attribute
+  slug: file => file.toLowerCase().replace(/[^a-z0-9]/g,'')
+})
 ```
