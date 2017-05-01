@@ -19,10 +19,8 @@ module.exports = function minjsBuilder(config, tools) {
     }
   }, config)
 
-  const ext = path.extname(config.dest)
-  const base = path.basename(config.dest)
   const transforms = [
-    ext === '.js' && tools.concat(base),
+    path.extname(config.dest) === '.js' && tools.concat(path.basename(config.dest)),
     config.minify && uglify(config.uglifyjs)
   ]
   return tools.commonBuilder(config, transforms)

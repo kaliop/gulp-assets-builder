@@ -3,23 +3,26 @@
   "private": true,
   "version": "4.0.0",
   "engines": {
-    "node": ">=4.0, <7"
+    "node": ">=4.0"
   },
   "scripts": {
-    "build": "cross-env NODE_NOTIFIER=1 gulp build",
-    "watch": "cross-env NODE_NOTIFIER=1 gulp watch"
+    "list": "gulp --tasks",
+    "build": "gulp build",
+    "watch": "gulp watch"
   },
   "devDependencies": {
-    "cross-env": "^4.0",
     "gulp": "^3.9",
-    "gulp-task-maker": "^1.0"
+    "gulp-task-maker": "^1.2"
   },
   "dependencies": {
     "jquery": "^3.2",
-    "normalize.css": "^6.0"
+    "normalize.css": "^6.0",
+    "sass-mq-build": "^1.0"
   },
   "browserslist": [
-    "last 3 versions",
+    "last 4 chrome versions",
+    "last 4 firefox versions",
+    "last 2 edge versions",
     "ios >= 9",
     "android >= 5",
     "ie >= 11"

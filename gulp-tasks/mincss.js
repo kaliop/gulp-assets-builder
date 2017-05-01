@@ -22,11 +22,9 @@ module.exports = function mincssBuilder(config, tools) {
     }
   }, config)
 
-  const ext = path.extname(config.dest)
-  const base = path.basename(config.dest)
   const transforms = [
     config.autoprefixer && autoprefixer(config.autoprefixer),
-    ext === '.css' && tools.concat(base),
+    path.extname(config.dest) === '.css' && tools.concat(path.basename(config.dest)),
     config.minify && csso(config.csso)
   ]
   return tools.commonBuilder(config, transforms)

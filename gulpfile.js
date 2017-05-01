@@ -4,7 +4,14 @@
  * based on gulp-task-maker (https://github.com/fvsch/gulp-task-maker)
  */
 
-require('gulp-task-maker').load('gulp-tasks', {
+const gtm = require('gulp-task-maker')
+
+gtm.conf({
+  notify: true,  // use system notifications for errors? (default: true)
+  strict: false  // throw errors immediately? (default: false, shows errors at the end)
+})
+
+gtm.load('gulp-tasks', {
 
   // IMPORTANT:
   //
@@ -27,18 +34,18 @@ require('gulp-task-maker').load('gulp-tasks', {
   sass: {
     src: [
       'test/src/css/*.css',
-      'test/src/sass/*.scss'
+      'test/src/sass/test.scss'
     ],
-    watch: 'test/src/**.{css,scss}', // watch specific patterns
+    watch: 'test/src/**/*.{css,scss}',
     dest:  'test/dist/sass.css'
   },
 
   less: {
     src: [
       'test/src/css/*.css',
-      'test/src/less/*.less'
+      'test/src/less/test.less'
     ],
-    watch: 'test/src/**.{css,less}',
+    watch: 'test/src/**/*.{css,less}',
     dest:  'test/dist/less.css'
   },
 

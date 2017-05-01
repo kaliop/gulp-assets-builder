@@ -1,13 +1,16 @@
-$test: 1000px;
+/*! sass test */
+
+$test: 800px;
 $column-count: 3;
 $column-gap: 40px;
 
 @import "partial";
-
 // Importing from the root of the project (where package.json lives)
 // should work, provided the dependencies are installed. For example:
-// @import "node_modules/sass-mq-build/mq-build";
+@import "node_modules/sass-mq-build/mq-build";
 
-.test {
-  max-width: $test;
+@media (mq-build(640px, 1024px)) {
+  .test {
+    max-width: $test;
+  }
 }
