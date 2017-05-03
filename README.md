@@ -3,7 +3,10 @@ Configurable assets builder
 
 A collection of configurable [gulp](http://gulpjs.com/) tasks we use to build front-end code, mostly for fully static or CMS-based website projects, using [gulp-task-maker](https://www.npmjs.com/package/gulp-task-maker).
 
-## Task list
+⚠ Requires Node.js 4 or later.
+
+Task list
+---------
 
 -   [less](gulp-tasks/less.md): compile Less stylesheets
 -   [mincss](gulp-tasks/mincss.md): concatenate and minify CSS
@@ -11,16 +14,23 @@ A collection of configurable [gulp](http://gulpjs.com/) tasks we use to build fr
 -   [sass](gulp-tasks/sass.md): compile Sass stylesheets
 -   [svgsymbols](gulp-tasks/svgsymbols.md): build SVG symbol sprites
 
-## Example installation
+Installation
+------------
 
-⚠ Requires Node.js 4 or later.
+### Simple installation
 
-1.  [Download a ZIP with the assets-builder scripts and config](https://github.com/gradientz/assets-builder/archive/master.zip) and unzip it in your projet directory.
+1.  [Download a ZIP of this repo](https://github.com/gradientz/assets-builder/archive/master.zip) and unzip it in your projet directory.
 3.  Change the main config in `gulpfile.js`.
-4.  Finally, in a command prompt, go to your project dir and run:  
-`npm install`
+4.  Finally, in a command prompt, go to your project dir and run: `npm install`.
 
-## Usage
+### Custom installation
+
+1.  Install `gulp` and `gulp-task-maker` as devDependencies: `npm install -D gulp gulp-task-maker`.
+2.  [Download a ZIP of this repo](https://github.com/gradientz/assets-builder/archive/master.zip) and copy the `gulp-tasks` directory or only the task scripts you want to ue.
+3.  Write your own `gulpfile.js`, following the [gulp-task-maker documentation](https://github.com/fvsch/gulp-task-maker/blob/master/README.md).
+
+Usage
+-----
 
 -   `npm run build`: build assets once
 -   `npm run watch`: run in the background and build assets when source files are changed
@@ -28,11 +38,10 @@ A collection of configurable [gulp](http://gulpjs.com/) tasks we use to build fr
 The first time you try to run a task, e.g. with `npm run build`, you might see an error that looks like this:
 
 ```  
-[13:37:21] [gulp-task-maker] Errors in 'sass', 'minjs', 'svgsymbols'
+[13:37:21] [gulp-task-maker] Errors in 'sass', 'minjs'
   …
   Install missing task dependencies with:
-    npm install -D "gulp-autoprefixer@^3.1" "gulp-sass@^2.3" "gulp-uglify@^2.0" "gulp-svgmin@^1.2" "gulp-svg-symbols@^2.0"
-
+    npm install -D "gulp-autoprefixer@^3.1" "gulp-sass@^2.3" "gulp-uglify@^2.0"
 ```
 
 This is because task dependencies are not installed by default, but documented in the task’s `.json` file. This allows us to maintain as many tasks as we want in this repo, but not install dependencies we don’t use.
@@ -42,10 +51,10 @@ Run the provided command (`npm install -D …`), then run `npm run build` again.
 ```
 $ npm run build
 
-> assets-builder@4.0.0 build ~/assets-builder
+> assets-builder@4.0.0 build ~/my-project
 > gulp build
 
-[13:38:12] Using gulpfile ~/assets-builder/gulpfile.js
+[13:38:12] Using gulpfile ~/my-project/gulpfile.js
 [13:38:12] Starting 'build-sass'...
 [13:38:12] Starting 'build-minjs'...
 [13:38:12] Starting 'build-svgsymbols'...

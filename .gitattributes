@@ -1,1 +1,6 @@
-/test  export-ignore
+# Archive downloads: only keep gulp-tasks, gulpfile.js, package.json
+/.gitignore      export-ignore
+/.gitattributes  export-ignore
+/LICENSE         export-ignore
+/README.md       export-ignore
+/test            export-ignore
