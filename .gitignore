@@ -1,2 +1,7 @@
-node_modules
+# Test output
 test/dist
+# Dependencies
+node_modules
+# This is a boilerplate: don't keep lockfiles
+package-lock.json
+yarn.lock

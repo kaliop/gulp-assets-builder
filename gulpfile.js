@@ -1,15 +1,10 @@
 'use strict';
 /**
- * Configuration for assets-builder (https://github.com/gradientz/assets-builder),
- * based on gulp-task-maker (https://github.com/fvsch/gulp-task-maker)
+ * Configuration for assets-builder, based on gulp-task-maker
+ * Guide: https://github.com/fvsch/gulp-task-maker/blob/master/doc/configuring-tasks.md
  */
 
 const gtm = require('gulp-task-maker');
-
-gtm.conf({
-  notify: true,  // use system notifications
-  strict: false  // shows errors at the end, instead of throwing
-});
 
 gtm.load('gulp-tasks', {
 
