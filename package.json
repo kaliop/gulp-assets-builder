@@ -1,7 +1,7 @@
 {
   "name": "assets-builder",
   "private": true,
-  "version": "4.0.1",
+  "version": "4.0.2",
   "engines": {
     "node": ">=4.0"
   },
@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "gulp": "^3.9",
-    "gulp-task-maker": "^1.4"
+    "gulp-task-maker": "^1.4.1"
   },
   "dependencies": {
     "jquery": "^3.2",
