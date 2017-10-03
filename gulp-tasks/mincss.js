@@ -1,31 +1,37 @@
-'use strict'
-const autoprefixer = require('gulp-autoprefixer')
-const csso = require('gulp-csso')
-const path = require('path')
+const autoprefixer = require("gulp-autoprefixer");
+const csso = require("gulp-csso");
+const path = require("path");
 
 /**
  * Make a CSS build, optionally concatenated and minified
- * @param {object} config - user configuration
- * @param {object} tools - utility functions provided by gulp-task-maker
+ * @param {object} userConfig
+ * @param {object} gtmTools
  * @returns {*}
  */
-module.exports = function mincssBuilder(config, tools) {
-  config = Object.assign({
-    minify: true,
-    sourcemaps: '.',
-    autoprefixer: {
-      flexbox: 'no-2009',
-      grid: false
+module.exports = function mincssBuilder(userConfig, gtmTools) {
+  const config = Object.assign(
+    {
+      minify: true,
+      sourcemaps: ".",
+      autoprefixer: {
+        flexbox: "no-2009",
+        grid: false
+      },
+      csso: {
+        restructure: false
+      }
     },
-    csso: {
-      restructure: false
-    }
-  }, config)
-
-  const transforms = [
-    config.autoprefixer && autoprefixer(config.autoprefixer),
-    path.extname(config.dest) === '.css' && tools.concat(path.basename(config.dest)),
-    config.minify && csso(config.csso)
-  ]
-  return tools.commonBuilder(config, transforms)
-}
+    userConfig
+  );
+  const transforms = [];
+  if (config.autoprefixer) {
+    transforms.push(autoprefixer(config.autoprefixer));
+  }
+  if (path.extname(config.dest) === ".css") {
+    transforms.push(gtmTools.concat(path.basename(config.dest)));
+  }
+  if (config.minify) {
+    transforms.push(csso(config.csso));
+  }
+  return gtmTools.commonBuilder(config, transforms);
+};
