@@ -1,10 +1,10 @@
 /**
- * @file Test all included gulp-tasks
+ * @file Test all included gulp-scripts
  */
 
 const gtm = require("gulp-task-maker");
 
-gtm.load("gulp-tasks", {
+gtm.load("gulp-scripts", {
   less: {
     src: ["test/src/css/*.css", "test/src/less/test.less"],
     watch: "test/src/**/*.{css,less}",
@@ -28,7 +28,7 @@ gtm.load("gulp-tasks", {
   svgsymbols: {
     src: "test/src/svg/*.svg",
     dest: "test/dist/svgsymbols.svg",
-    id: "icon-%f", // id pattern for symbols, where '%f' is the cleaned up file name
+    id: "icon-%f", // id pattern for symbols, where "%f" is the cleaned up file name
     svgClassname: "inline-sprite", // add class to the root <svg> element
     demo: true
   }

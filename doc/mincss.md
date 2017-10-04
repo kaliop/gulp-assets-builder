@@ -10,16 +10,16 @@
 ## Options
 
 ```js
-require('gulp-task-maker').task('gulp-tasks/mincss.js', {
+require("gulp-task-maker").task("gulp-scripts/mincss.js", {
   // (Required) Source can be a single stylesheet
   // or pattern, or an array of paths or patterns
-  src: 'assets/styles/*.css',
+  src: "assets/styles/*.css",
 
-  // (Required) Destination can be a folder name, or a filename ending in '.css'.
+  // (Required) Destination can be a folder name, or a filename ending in ".css".
   // The main difference is when building more than one stylesheet.
-  // - Filename ending in '.css': the result will be concatenated
+  // - Filename ending in ".css": the result will be concatenated
   // - Otherwise: original filenames are used, and put in the destination folder.
-  dest: 'public/css/main.css',
+  dest: "public/css/main.css",
 
   // (Optional; defaults to false)
   // File patterns to watch for changes
@@ -29,13 +29,13 @@ require('gulp-task-maker').task('gulp-tasks/mincss.js', {
   // Should we minify with csso?
   minify: true,
 
-  // (Optional; defaults to '.'; false to disable)
-  // Where should we write sourcemaps (relative to 'dest')
-  sourcemaps: '.',
+  // (Optional; defaults to "."; false to disable)
+  // Where should we write sourcemaps (relative to "dest")
+  sourcemaps: ".",
 
   // (Optional; defaults shown below; false to disable)
   // gulp-autoprefixer options
-  autoprefixer: { flexbox: 'no-2009', grid: false },
+  autoprefixer: { flexbox: "no-2009", grid: false },
 
   // (Optional; defaults shown below)
   // gulp-csso options

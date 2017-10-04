@@ -8,11 +8,11 @@ A collection of configurable [gulp](http://gulpjs.com/) tasks we use to build fr
 Task list
 ---------
 
--   [less](gulp-tasks/less.md): compile Less stylesheets
--   [mincss](gulp-tasks/mincss.md): concatenate and minify CSS
--   [minjs](gulp-tasks/minjs.md): concatenate and minify JS code
--   [sass](gulp-tasks/sass.md): compile Sass stylesheets
--   [svgsymbols](gulp-tasks/svgsymbols.md): build SVG symbol sprites
+-   [less](doc/less.md): compile Less stylesheets
+-   [mincss](doc/mincss.md): concatenate and minify CSS
+-   [minjs](doc/minjs.md): concatenate and minify JS code
+-   [sass](doc/sass.md): compile Sass stylesheets
+-   [svgsymbols](doc/svgsymbols.md): build SVG symbol sprites
 
 Installation
 ------------
@@ -26,7 +26,7 @@ Installation
 ### Custom installation
 
 1.  Install `gulp` and `gulp-task-maker` as devDependencies: `npm install -D gulp gulp-task-maker`.
-2.  [Download a ZIP of this repo](https://github.com/gradientz/assets-builder/archive/master.zip) and copy the `gulp-tasks` directory or only the task scripts you want to ue.
+2.  [Download a ZIP of this repo](https://github.com/gradientz/assets-builder/archive/master.zip) and copy the `gulp-scripts` directory or only the task scripts you want to ue.
 3.  Write your own `gulpfile.js`, following the [gulp-task-maker documentation](https://github.com/fvsch/gulp-task-maker/blob/master/README.md).
 
 Usage

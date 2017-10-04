@@ -9,13 +9,13 @@
 ## Options
 
 ```js
-require('gulp-task-maker').task('gulp-tasks/svgsymbols.js', {
+require("gulp-task-maker").task("gulp-scripts/svgsymbols.js", {
   // (Required) Source can be a single script or pattern,
   // or an array of paths or patterns
-  src: 'assets/scripts/*.js',
+  src: "assets/scripts/*.js",
 
-  // (Required) Destination must be a filename ending in '.svg'.
-  dest: 'public/css/main.svg',
+  // (Required) Destination must be a filename ending in ".svg".
+  dest: "public/css/main.svg",
 
   // (Optional; defaults to false)
   // File patterns to watch for changes
@@ -28,20 +28,20 @@ require('gulp-task-maker').task('gulp-tasks/svgsymbols.js', {
   
   // (Optional; defaults to the string shown below)
   // Pattern for the symbol’s id attribute.
-  // '%f' is the cleaned-up original filename.
-  id: 'icon-%f',
+  // "%f" is the cleaned-up original filename.
+  id: "icon-%f",
 
   // (Optional; defaults to false)
   // Should we make a HTML demo page?
   demo: false,
 
   // (Optional; defaults to false)
-  // Add a class name on the sprite's root <svg> element?
+  // Add a class name on the sprite’s root <svg> element?
   // Can be useful for sprites you want to directly include in a web page.
-  svgClassname: 'inline-sprite',
+  svgClassname: "inline-sprite",
 
   // (Optional; defaults to the function shown below)
-  // Function that cleans up file names to be used in the symbol's id attribute
-  slug: file => file.toLowerCase().replace(/[^a-z0-9]/g,'')
+  // Function that cleans up file names to be used in the symbol’s id attribute
+  slug: file => file.toLowerCase().replace(/[^a-z0-9]/g,"")
 })
 ```
