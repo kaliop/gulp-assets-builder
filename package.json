@@ -6,7 +6,6 @@
     "node": ">=6.0"
   },
   "scripts": {
-    "list": "gulp --tasks",
     "build": "gulp build",
     "watch": "gulp watch"
   },
