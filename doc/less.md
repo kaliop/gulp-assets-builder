@@ -11,7 +11,7 @@
 ## Options
 
 ```js
-require("gulp-task-maker").task("gulp-scripts/less.js", {
+require("gulp-task-maker").task("gulp-tasks/less.js", {
   // (Required) Source can be a single Less or CSS stylesheet
   // or pattern, or an array of paths or patterns
   src: "assets/styles/*.less",

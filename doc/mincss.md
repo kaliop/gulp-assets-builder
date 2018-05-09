@@ -10,7 +10,7 @@
 ## Options
 
 ```js
-require("gulp-task-maker").task("gulp-scripts/mincss.js", {
+require("gulp-task-maker").task("gulp-tasks/mincss.js", {
   // (Required) Source can be a single stylesheet
   // or pattern, or an array of paths or patterns
   src: "assets/styles/*.css",

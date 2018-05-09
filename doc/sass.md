@@ -11,7 +11,7 @@
 ## Options
 
 ```js
-require("gulp-task-maker").task("gulp-scripts/sass.js", {
+require("gulp-task-maker").task("gulp-tasks/sass.js", {
   // (Required) Source can be a single Sass stylesheet
   // or pattern, or an array of paths or patterns
   src: "assets/styles/*.scss",

@@ -6,19 +6,16 @@
     "node": ">=6.0"
   },
   "scripts": {
-    "build": "gulp build",
+    "test": "rm gulp-tasks -rf && cp -R ../gulp-tasks . && gulp build",
     "watch": "gulp build && GTM_NOTIFY=1 gulp watch"
   },
   "devDependencies": {
     "gulp": "^3.9",
     "gulp-task-maker": "^1.4"
   },
-  "browserslist": [
-    "last 4 chrome versions",
-    "last 4 firefox versions",
-    "last 2 edge versions",
-    "ios >= 9",
-    "android >= 5",
-    "ie >= 11"
-  ]
+  "dependencies": {
+    "jquery": "^3.2",
+    "normalize.css": "^8.0",
+    "sass-mq-build": "^1.0"
+  }
 }

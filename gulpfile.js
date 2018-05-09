@@ -5,24 +5,34 @@
 
 const gtm = require("gulp-task-maker");
 
-gtm.load("gulp-scripts", {
+gtm.conf({
+  notify: process.env.GTM_NOTIFY || false,
+  strict: process.env.GTM_STRICT || false
+});
+
+gtm.load("gulp-tasks", {
   sass: {
-    src: ["test/src/css/*.css", "test/src/sass/test.scss"],
-    watch: "test/src/**/*.{css,scss}",
-    dest: "test/dist/sass.css"
+    src: "src/scss/main.scss",
+    watch: "src/scss/**/*.scss",
+    dest: "dist/main.css"
   },
 
   minjs: {
-    src: ["node_modules/jquery/dist/jquery.min.js", "test/src/js/*.js"],
-    dest: "test/dist/minjs.js",
-    watch: "test/src/js/*.js"
+    src: [
+      // install dependencies with npm and import from node_modules
+      // "node_modules/some-lib/dist/some-lib.js",
+      "src/js/*.js"
+    ],
+    watch: "src/js/*.js",
+    dest: "dist/main.js",
   },
 
   svgsymbols: {
-    src: "test/src/svg/*.svg",
-    dest: "test/dist/svgsymbols.svg",
-    id: "icon-%f", // id pattern for symbols, where "%f" is the cleaned up file name
-    svgClassname: "inline-sprite", // add class to the root <svg> element
-    demo: true
+    src: "src/svg/*.svg",
+    watch: true,
+    dest: "dist/icons.svg",
+    demo: true, // create a HTML list of icons
+    id: "icon-%f", // id pattern for symbols ("%f" is the cleaned up file name)
+    svgAttrs: {}, // add XML attributes to the root <svg> element
   }
 });

@@ -1,4 +1,4 @@
-# Archive downloads: only keep gulp-scripts, gulpfile.js, package.json
+# Archive downloads: only keep gulp-tasks, gulpfile.js, package.json
 /doc               export-ignore
 /test              export-ignore
 /.gitignore        export-ignore

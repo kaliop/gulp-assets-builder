@@ -26,7 +26,7 @@ Installation
 ### Custom installation
 
 1.  Install `gulp` and `gulp-task-maker` as devDependencies: `npm install -D gulp gulp-task-maker`.
-2.  [Download a ZIP of this repo](https://github.com/gradientz/assets-builder/archive/master.zip) and copy the `gulp-scripts` directory or only the task scripts you want to ue.
+2.  [Download a ZIP of this repo](https://github.com/gradientz/assets-builder/archive/master.zip) and copy the `gulp-tasks` directory or only the task scripts you want to ue.
 3.  Write your own `gulpfile.js`, following the [gulp-task-maker documentation](https://github.com/fvsch/gulp-task-maker/blob/master/README.md).
 
 Usage

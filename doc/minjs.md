@@ -9,7 +9,7 @@
 ## Options
 
 ```js
-require("gulp-task-maker").task("gulp-scripts/minjs.js", {
+require("gulp-task-maker").task("gulp-tasks/minjs.js", {
   // (Required) Source can be a single script or pattern,
   // or an array of paths or patterns
   src: "assets/scripts/*.js",
