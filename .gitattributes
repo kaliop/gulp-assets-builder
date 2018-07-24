@@ -1,8 +1,8 @@
-# Archive downloads: only keep gulp-tasks, gulpfile.js, package.json
+# Archive downloads: only keep tasks, gulpfile.js, package.json
 /doc               export-ignore
 /test              export-ignore
+/.eslintrc         export-ignore
 /.gitignore        export-ignore
 /.gitattributes    export-ignore
-/gulpfile.test.js  export-ignore
 /LICENSE           export-ignore
 /README.md         export-ignore

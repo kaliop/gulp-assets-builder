@@ -30,6 +30,10 @@ require("gulp-task-maker").task("gulp-tasks/sass.js", {
   // Should we minify with csso?
   minify: true,
 
+  // (Optional; pass a filename to use)
+  // Should we concatenate all resulting files?
+  concat: undefined,
+
   // (Optional; defaults to "."; false to disable)
   // Where should we write sourcemaps (relative to "dest")
   sourcemaps: ".",

@@ -1,6 +1,9 @@
-# Test output
-test/gulp-tasks
-test/dist
+# Default sources
+/dist
+
+# Test setup/output
+/test/tasks
+/test/dist
 
 # This is a boilerplate: don't keep lockfiles
 node_modules

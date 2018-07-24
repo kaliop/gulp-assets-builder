@@ -21,6 +21,10 @@ require("gulp-task-maker").task("gulp-tasks/svgsymbols.js", {
   // Use true to watch the config.src files.
   watch: false,
 
+  // (Optional; defaults to true)
+  // Should we minify with svgo?
+  minify: true,
+
   // (Optional; defaults to false)
   // Should we make a HTML demo page?
   demo: false,
@@ -30,12 +34,12 @@ require("gulp-task-maker").task("gulp-tasks/svgsymbols.js", {
   // "%f" is the cleaned-up original filename.
   id: "icon-%f",
 
-  // (Optional; defaults to the function shown below)
-  // Function that cleans up file names to be used in the symbol’s id attribute
-  slug: name => name.toLowerCase().replace(/[^a-z0-9]/g,""),
-
   // (Optional) XML attributes added to the sprite's root element
   // e.g. {"aria-hidden": "true", height: 0, width: 0}
-  svgAttrs: {}
+  svgAttrs: {},
+
+  // (Optional; defaults to the function shown below)
+  // Function that cleans up file names to be used in the symbol’s id attribute
+  toSlug: name => name.toLowerCase().replace(/[^a-z0-9]/g,""),
 })
 ```

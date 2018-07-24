@@ -1,0 +1,9 @@
+{
+  "name": "assets-builder-svgsymbols",
+  "private": true,
+  "dependencies": {
+    "gulp-rename": "^1.2",
+    "gulp-svgo": "^1.5",
+    "gulp-svg-symbols": "^3.1"
+  }
+}

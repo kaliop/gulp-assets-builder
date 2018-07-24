@@ -1,21 +1,27 @@
 {
   "name": "assets-builder",
   "private": true,
-  "version": "4.1.0",
+  "version": "5.0.0",
   "engines": {
     "node": ">=6.0"
   },
   "scripts": {
-    "test": "rm gulp-tasks -rf && cp -R ../gulp-tasks . && gulp build",
-    "watch": "gulp build && GTM_NOTIFY=1 gulp watch"
-  },
-  "devDependencies": {
-    "gulp": "^3.9",
-    "gulp-task-maker": "^1.4"
+    "preinstall": "rm tasks -rf && cp -R ../tasks . ",
+    "test": "gulp build",
+    "watch": "gulp build watch --series"
   },
   "dependencies": {
     "jquery": "^3.2",
     "normalize.css": "^8.0",
     "sass-mq-build": "^1.0"
+  },
+  "devDependencies": {
+    "assets-builder-less": "./tasks/less",
+    "assets-builder-mincss": "./tasks/mincss",
+    "assets-builder-minjs": "./tasks/minjs",
+    "assets-builder-sass": "./tasks/sass",
+    "assets-builder-svgsymbols": "./tasks/svgsymbols",
+    "gulp": "^4.0",
+    "gulp-task-maker": "^2.0"
   }
 }

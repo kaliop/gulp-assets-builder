@@ -1,24 +1,25 @@
 {
   "name": "assets-builder",
   "private": true,
-  "version": "4.1.0",
+  "version": "5.0.0",
   "engines": {
-    "node": ">=6.0"
+    "node": ">=6.5"
   },
   "scripts": {
     "build": "gulp build",
-    "watch": "gulp build && GTM_NOTIFY=1 gulp watch"
+    "watch": "gulp build watch --series"
   },
   "devDependencies": {
-    "gulp": "^3.9",
-    "gulp-task-maker": "^1.4"
+    "assets-builder-minjs": "./tasks/minjs",
+    "assets-builder-sass": "./tasks/sass",
+    "assets-builder-svgsymbols": "./tasks/svgsymbols",
+    "gulp": "^4.0",
+    "gulp-task-maker": "^2.0"
   },
   "browserslist": [
-    "last 4 chrome versions",
-    "last 4 firefox versions",
-    "last 2 edge versions",
+    "defaults",
     "ios >= 9",
     "android >= 5",
-    "ie >= 11"
+    "not ie < 11"
   ]
 }

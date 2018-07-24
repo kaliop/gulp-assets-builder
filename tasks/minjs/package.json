@@ -1,0 +1,8 @@
+{
+  "name": "assets-builder-minjs",
+  "private": true,
+  "dependencies": {
+    "gulp-concat": "^2.6",
+    "gulp-uglify": "^3.0"
+  }
+}
