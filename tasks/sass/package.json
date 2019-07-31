@@ -2,9 +2,10 @@
   "name": "assets-builder-sass",
   "private": true,
   "dependencies": {
-    "gulp-autoprefixer": "^5.0",
+    "gulp-autoprefixer": "^6.0",
     "gulp-concat": "^2.6",
     "gulp-csso": "^3.0",
-    "gulp-sass": "^4.0"
+    "gulp-sass": "^4.0",
+    "sass": "^1.22"
   }
 }

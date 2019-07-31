@@ -39,8 +39,8 @@ require("gulp-task-maker").task("gulp-tasks/sass.js", {
   sourcemaps: ".",
 
   // (Optional; defaults shown below)
-  // gulp-sass options
-  sass: { outputStyle: "compact", includePaths: ["."] },
+  // dart-sass options
+  sass: { outputStyle: "expanded", includePaths: ["."] },
 
   // (Optional; defaults shown below; false to disable)
   // gulp-autoprefixer options

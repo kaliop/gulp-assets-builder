@@ -1,5 +1,5 @@
 const concat = require("gulp-concat");
-const uglify = require("gulp-uglify");
+const terser = require("gulp-terser");
 
 /**
  * Make a simple JS build, optionally concatenated and minified
@@ -10,17 +10,14 @@ const uglify = require("gulp-uglify");
 function minjs(config, tools) {
   return tools.simpleStream(config, [
     config.concat && concat(config.concat),
-    config.minify && uglify(config.uglifyjs)
+    config.minify && terser(config.terser)
   ]);
 }
 
 minjs.baseConfig = {
   minify: true,
   sourcemaps: ".",
-  uglifyjs: {
-    compress: { drop_debugger: false },
-    output: { inline_script: true }
-  }
+  terser: {}
 };
 
 module.exports = minjs;

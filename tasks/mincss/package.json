@@ -2,7 +2,7 @@
   "name": "assets-builder-mincss",
   "private": true,
   "dependencies": {
-    "gulp-autoprefixer": "^5.0",
+    "gulp-autoprefixer": "^6.0",
     "gulp-concat": "^2.6",
     "gulp-csso": "^3.0"
   }

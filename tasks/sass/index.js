@@ -3,6 +3,9 @@ const concat = require("gulp-concat");
 const csso = require("gulp-csso");
 const gulpSass = require("gulp-sass");
 
+// Use the dart-sass compiler rather than node-sass
+gulpSass.compiler = require("sass");
+
 /**
  * Make a CSS build from CSS and/or Sass sources,
  * optionally concatenated and minified
@@ -23,7 +26,7 @@ sass.baseConfig = {
   minify: true,
   sourcemaps: ".",
   sass: {
-    outputStyle: "compact",
+    outputStyle: "expanded",
     includePaths: ["."]
   },
   autoprefixer: {

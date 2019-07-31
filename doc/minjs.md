@@ -4,7 +4,7 @@
 
 - Concatenate files
 - Sourcemaps support
-- Minify with UglifyJS (warning: no ES6 support!)
+- Minify with Terser (ES5 and ES6)
 
 ## Options
 
@@ -36,12 +36,9 @@ require("gulp-task-maker").task("gulp-tasks/minjs.js", {
   // Where should we write sourcemaps (relative to "dest")
   sourcemaps: ".",
 
-  // (Optional; defaults shown below)
-  // gulp-uglify options
-  uglifyjs: {
-    output: {inline_script: true},
-    compress: {drop_debugger: false},
-    preserveComments: "license"
-  }
+  // (Optional; uses terser-js defaults)
+  // Accepts an object of terser options:
+  // https://github.com/terser-js/terser#minify-options
+  terser: undefined
 })
 ```
